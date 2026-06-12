@@ -1,0 +1,21 @@
+{
+  "name": "Crochet Counter",
+  "short_name": "Crochet",
+  "description": "A simple stitch and row counter for crochet.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e6eee8",
+  "theme_color": "#e6eee8",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
