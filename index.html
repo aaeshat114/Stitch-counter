@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crochet Counter</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e6eee8">
+    <style>
+        :root {
+            --bg-color: #e6eee8;
+            --main-green: #5a8067;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--main-green);
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            user-select: none; /* Prevents text highlighting on rapid tapping */
+        }
+
+        .counter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .label {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            touch-action: manipulation; /* Optimizes touch responsiveness */
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .circle {
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--main-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            background: transparent;
+        }
+
+        .gear-icon {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: rgba(90, 128, 103, 0.5);
+            cursor: pointer;
+        }
+
+        /* Settings Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 2px solid var(--main-green);
+        }
+
+        .modal-content label {
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-content input {
+            width: 60px;
+            font-size: 1.2rem;
+            padding: 5px;
+            border: 1px solid var(--main-green);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .save-btn {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="counter-section">
+        <div class="label">Stitches</div>
+        <div class="controls">
+            <button class="btn" id="stitchMinus">-</button>
+            <div class="circle" id="stitchDisplay">0</div>
+            <button class="btn" id="stitchPlus">+</button>
+        </div>
+    </div>
+
+    <div class="counter-section">
+        <div class="label">Rows</div>
+        <div class="controls">
+            <button class="btn" id="rowMinus">-</button>
+            <div class="circle" id="rowDisplay">0</div>
+            <button class="btn" id="rowPlus">+</button>
+        </div>
+    </div>
+
+    <div class="gear-icon" id="settingsBtn">⚙️</div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2 style="margin-top:0;">Project Setup</h2>
+            <label>
+                Stitches per row:
+                <input type="number" id="stitchesPerRowInput" value="40" min="1">
+            </label>
+            <label>
+                Total rows goal:
+                <input type="number" id="totalRowsInput" value="10" min="1">
+            </label>
+            <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let stitches = 0;
+        let rows = 0;
+        let stitchesPerRow = 40; 
+        
+        // DOM Elements
+        const stitchDisplay = document.getElementById('stitchDisplay');
+        const rowDisplay = document.getElementById('rowDisplay');
+        
+        // Update the screen
+        function updateDisplay() {
+            stitchDisplay.innerText = stitches;
+            rowDisplay.innerText = rows;
+            
+            // Save state to local storage so progress isn't lost if app is closed
+            localStorage.setItem('crochetStitches', stitches);
+            localStorage.setItem('crochetRows', rows);
+            localStorage.setItem('crochetStitchesPerRow', stitchesPerRow);
+        }
+
+        // Load saved data if it exists
+        window.onload = () => {
+            if(localStorage.getItem('crochetStitchesPerRow')) {
+                stitches = parseInt(localStorage.getItem('crochetStitches')) || 0;
+                rows = parseInt(localStorage.getItem('crochetRows')) || 0;
+                stitchesPerRow = parseInt(localStorage.getItem('crochetStitchesPerRow')) || 40;
+                document.getElementById('stitchesPerRowInput').value = stitchesPerRow;
+            }
+            updateDisplay();
+        };
+
+        // --- STITCH LOGIC ---
+        document.getElementById('stitchPlus').addEventListener('click', () => {
+            stitches++;
+            if (stitches >= stitchesPerRow) {
+                stitches = 0;
+                rows++;
+            }
+            updateDisplay();
+        });
+
+        document.getElementById('stitchMinus').addEventListener('click', () => {
+            if (stitches === 0) {
+                if (rows > 0) {
+                    rows--;
+                    stitches = stitchesPerRow - 1;
+                }
+            } else {
+                stitches--;
+            }
+            updateDisplay();
+        });
+
+        // --- ROW LOGIC ---
+        document.getElementById('rowPlus').addEventListener('click', () => {
+            rows++;
+            updateDisplay();
+        });
+
+        document.getElementById('rowMinus').addEventListener('click', () => {
+            if (rows > 0) {
+                rows--;
+            }
+            updateDisplay();
+        });
+
+        // --- SETTINGS LOGIC ---
+        const modal = document.getElementById('settingsModal');
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            stitchesPerRow = parseInt(document.getElementById('stitchesPerRowInput').value) || 1;
+            modal.style.display = 'none';
+            updateDisplay();
+        });
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker Registered'));
+        }
+    </script>
+</body>
+</html>
