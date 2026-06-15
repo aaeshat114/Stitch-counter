@@ -346,16 +346,17 @@
         });
 
         document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-            if (rows > totalRowsInput || (rows === totalRowsInput && stitches > 0)) {
-               updateTextModal("You've already finished more rows than the goal"); }
-            else {
-               totalRows = totalRowsInput;
+            const inputTotalRows = parseInt(document.getElementById('totalRowsInput').value) || 1;
+            if (rows > inputTotalRows || (rows === inputTotalRows && stitches > 0)) {
+               updateTextModal("You've already finished more rows than the goal"); 
+            } else {
+               totalRows = inputTotalRows;
                stitchesPerRow = parseInt(document.getElementById('stitchesPerRowInput').value) || 1;
                modal.style.display = 'none';
                updateDisplay();
-               updateTextModal("")
+               updateTextModal("");
                doMath();
-               }
+            }
         });
 
         // Register Service Worker for PWA
