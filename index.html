@@ -112,15 +112,12 @@
 }
 
 #notification {
-    background-color: var(--main-green);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
+    font-size: 1.2rem;
     text-align: center;
-    margin: 10px 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    padding: 10px 20px;
+    margin: 15px auto;
+    max-width: 70%; /* Keeps text away from the edges to avoid the gear icon */
+    min-height: 1.5em; /* Prevents the screen from jumping when text appears */
 }
 
 #notification:empty {
@@ -128,13 +125,10 @@
 }
 
 #notificationModal {
-    color: white;
-    background-color: rgba(0,0,0,0.5);
-    padding: 10px;
-    border-radius: 8px;
     font-size: 1rem;
-    font-weight: bold;
     text-align: center;
+    padding: 5px 10px;
+    min-height: 1.2em; /* Keeps the modal size stable when empty */
 }
 
 #notificationModal:empty {
