@@ -111,6 +111,35 @@
     fill: currentColor; /* Forces the SVG to inherit the color defined above */
 }
 
+#notification {
+    background-color: var(--main-green);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+#notification:empty {
+    display: none;
+}
+
+#notificationModal {
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#notificationModal:empty {
+    display: none;
+}
 
         /* Settings Modal */
         .modal {
