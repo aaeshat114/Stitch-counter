@@ -216,23 +216,6 @@
         function updateDisplay() {
             stitchDisplay.innerText = stitches;
             rowDisplay.innerText = rows;
-        }
-
-        function updateText(notificationText) {
-            notification.innerText = notificationText;
-        }
-
-        function updateTextModal(notificationModalText) {
-            notificationModal.innerText = notificationModalText;
-        }
-
-        function doMath() {
-            if (rows === totalRows) {
-               updateText("Congratulations, you've finished!"); }
-            else {
-               updateText(""); }
-        }
-        
             
             // Save state to local storage so progress isn't lost if app is closed
             localStorage.setItem('crochetStitches', stitches);
@@ -253,6 +236,23 @@
             }
             updateDisplay();
         };
+
+        // Functions
+
+        function updateText(notificationText) {
+            notification.innerText = notificationText;
+        }
+
+        function updateTextModal(notificationModalText) {
+            notificationModal.innerText = notificationModalText;
+        }
+
+        function doMath() {
+            if (rows === totalRows) {
+               updateText("Congratulations, you've finished!"); }
+            else {
+               updateText(""); }
+        }
 
         // --- STITCH LOGIC ---
         document.getElementById('stitchPlus').addEventListener('click', () => {
