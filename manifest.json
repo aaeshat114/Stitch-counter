@@ -1,7 +1,7 @@
 {
-  "name": "Crochet Counter",
-  "short_name": "Crochet",
-  "description": "A simple stitch and row counter for crochet.",
+  "name": "Stitch Counter",
+  "short_name": "Stitch Counter",
+  "description": "A simple stitch and row counter for crochet/knitting.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#e6eee8",
