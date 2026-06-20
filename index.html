@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Crochet Counter</title>
+    <title>Stitch Counter</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e6eee8">
     <style>
@@ -22,22 +22,140 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            user-select: none; /* Prevents text highlighting on rapid tapping */
+            height: 100dvh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #dropdownOverlay {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 10;
+        }
+
+        .header-section {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            padding-top: 20px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+        
+        h2 {
+            color: var(--main-green);
+            font-family: inherit;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        .project-title {
+            all: unset;
+            box-sizing: border-box;
+            background-color: transparent;
+            color: var(--main-green);
+            border: 0px solid transparent;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.2rem;
+            text-align: center;
+            border-radius: 15px;
+            min-width: 250px;
+            transition: all 0.2s;
+        }
+
+        .project-title.active {
+            background-color: var(--bg-color);
+            border-color: transparent;
+            border-bottom-color: transparent;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+            z-index: 22;
+        }
+
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            background: var(--bg-color);
+            padding: 0 20px 20px 20px;
+            border-radius: 0 0 15px 15px;
+            border: 0px transparent;
+            border-top: none;
+            min-width: 250px;
+            box-sizing: border-box;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            gap: 5px;
+        }
+
+        .list li {
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            transition: background-color 0.2s;
+        }
+
+        .list li:active {
+            background-color: rgba(90, 128, 103, 0.15);
+        }
+
+        #btnNewProject {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #btnNewProject:active {
+            transform: scale(0.95);
         }
 
         .counter-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
             width: 100%;
         }
 
         .label {
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 15px;
-        }
+        }       
 
         .controls {
             display: flex;
@@ -59,27 +177,27 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            touch-action: manipulation; /* Optimizes touch responsiveness */
+            touch-action: manipulation;
         }
-        
+
         .btn:active {
             transform: scale(0.95);
         }
 
         .restore-btn {
-    display: none;
-    touch-action: pan-y;
-    background-color: var(--main-green);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1.1rem;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    margin-top: 15px;
-}
-
+            display: none;
+            touch-action: pan-y;
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
 
         .circle {
             width: 120px;
@@ -95,54 +213,57 @@
         }
 
         .gear-icon {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    width: 45px;
-    height: 45px;
-    color: var(--main-green);
-    opacity: 0.25;        
-    cursor: pointer;
-}
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            color: var(--main-green);
+            opacity: 0.25;        
+            cursor: pointer;
+        }
 
-.gear-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: currentColor; /* Forces the SVG to inherit the color defined above */
-}
+        .gear-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
 
-#notification {
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 10px 20px;
-    margin: 15px auto;
-    max-width: 70%; /* Keeps text away from the edges to avoid the gear icon */
-    min-height: 1.5em; /* Prevents the screen from jumping when text appears */
-}
+        #notification {
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 5px 20px;
+            margin: 5px auto;
+            max-width: 70%;
+            min-height: 1.5em;
+        }
 
-#notification:empty {
-    display: none;
-}
+        #notification:empty {
+            display: none;
+        }
 
-#notificationModal {
-    font-size: 1rem;
-    text-align: center;
-    padding: 5px 10px;
-    min-height: 1.2em; /* Keeps the modal size stable when empty */
-}
+        #notificationModal {
+            font-size: 1rem;
+            text-align: center;
+            padding: 5px 10px;
+            min-height: 1.2em;
+        }
 
-#notificationModal:empty {
-    display: none;
-}
+        #notificationModal:empty {
+            display: none;
+        }
 
-        /* Settings Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
             background: rgba(0,0,0,0.5);
             align-items: center;
             justify-content: center;
+            z-index: 100;
         }
 
         .modal-content {
@@ -152,7 +273,8 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            border: 2px solid var(--main-green);
+            border: 0px solid transparent;
+            width: 66vw;
         }
 
         .modal-content label {
@@ -163,7 +285,7 @@
             gap: 10px;
         }
 
-        .modal-content input {
+        .modal-content input {      
             width: 60px;
             font-size: 1.2rem;
             padding: 5px;
@@ -171,36 +293,84 @@
             border-radius: 5px;
             text-align: center;
         }
+         
+        input:focus {
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4); 
+            border-radius: 5px; 
+        }
+         
+        #projectTitleModal {
+            all: unset;
+            color: var(--main-green)
+            border: 0px;
+            width: 50vw;
+            background-color: transparent;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }         
+                 
+        .button-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        #confirmModal .button-group {
+            margin-top: 0px; 
+        }
 
         .save-btn {
             background-color: var(--main-green);
             color: white;
             border: none;
             padding: 10px;
-            font-size: 1.2rem;
+            font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
         }
+
+        .delete-btn {
+            background-color: white;
+            color: var(--main-green);
+            border: 1px solid var(--main-green);
+            padding: 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
-
-    <div class="counter-section">
-        <div class="label">Stitches</div>
-        <div class="controls">
-            <button class="btn" id="stitchMinus">-</button>
-            <div class="circle" id="stitchDisplay">0</div>
-            <button class="btn" id="stitchPlus">+</button>
+    <div id="dropdownOverlay"></div>
+    
+    <div class="header-section">
+        <h1><button class="project-title" id="projectTitle"></button></h1>
+        <div class="dropdown" id="dropdown">
+            <ul class="list" id="dropdownList"></ul>
+            <button id="btnNewProject">+ New Project</button>
         </div>
     </div>
 
     <div class="counter-section">
-        <div class="label">Rows</div>
-        <div class="controls">
-            <button class="btn" id="rowMinus">-</button>
-            <div class="circle" id="rowDisplay">0</div>
-            <button class="btn" id="rowPlus">+</button>
+        <div class="counter">
+            <div class="label">Stitches</div>
+            <div class="controls">
+                <button class="btn" id="stitchMinus">-</button>
+                <div class="circle" id="stitchDisplay">0</div>
+                <button class="btn" id="stitchPlus">+</button>
+            </div>
+        </div>
+        <div class="counter">
+            <div class="label">Rows</div>
+            <div class="controls">
+                <button class="btn" id="rowMinus">-</button>
+                <div class="circle" id="rowDisplay">0</div>
+                <button class="btn" id="rowPlus">+</button>
+            </div>
         </div>
     </div>
 
@@ -208,14 +378,14 @@
     <div class="restore"><button class="restore-btn" id="restoreBtn">Restore stitch count</button></div>
     
     <div class="gear-icon" id="settingsBtn">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-    </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+        </svg>
     </div>
     
     <div class="modal" id="settingsModal">
         <div class="modal-content">
-            <h2 style="margin-top:0;">Project Setup</h2>
+            <input type="text" id="projectTitleModal">
             <label>
                 Stitches per row:
                 <input type="number" id="stitchesPerRowInput" value="40" min="1">
@@ -225,16 +395,27 @@
                 <input type="number" id="totalRowsInput" value="10" min="1">
             </label>
             <div id="notificationModal"></div>
-            <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
+            <div class="button-group">
+                <button class="delete-btn" id="deleteProjectBtn">Delete Project</button>
+                <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h2>Do you really want to delete this project?</h2>
+            <div class="button-group">
+                <button class="save-btn" id="cancelDeleteBtn">Cancel</button>
+                <button class="delete-btn" id="confirmDeleteBtn">Delete</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // State variables
-        let stitches = 0;
-        let rows = 0;
-        let stitchesPerRow = 40; 
-        let totalRows = 10;
+        // State Variables
+        let projects = [];
+        let activeProject = 0;
         let storedStitches = 0;
         let startX = 0;
         
@@ -244,33 +425,69 @@
         const notification = document.getElementById('notification');
         const notificationModal = document.getElementById('notificationModal');
         const restoreBtn = document.getElementById('restoreBtn');
-        
-        // Update the screen
-        function updateDisplay() {
-            stitchDisplay.innerText = stitches;
-            rowDisplay.innerText = rows;
-            
-            // Save state to local storage so progress isn't lost if app is closed
-            localStorage.setItem('crochetStitches', stitches);
-            localStorage.setItem('crochetRows', rows);
-            localStorage.setItem('crochetStitchesPerRow', stitchesPerRow);
-            localStorage.setItem('crochetTotalRows', totalRows);
-        }
-
-        // Load saved data if it exists
-        window.onload = () => {
-            if(localStorage.getItem('crochetStitchesPerRow')) {
-                stitches = parseInt(localStorage.getItem('crochetStitches')) || 0;
-                rows = parseInt(localStorage.getItem('crochetRows')) || 0;
-                stitchesPerRow = parseInt(localStorage.getItem('crochetStitchesPerRow')) || 40;
-                document.getElementById('stitchesPerRowInput').value = stitchesPerRow;
-                totalRows = parseInt(localStorage.getItem('crochetTotalRows')) || 10;
-                document.getElementById('totalRowsInput').value = totalRows;
-            }
-            updateDisplay();
-        };
+        const modal = document.getElementById('settingsModal');
+        const dropdown = document.getElementById('dropdown');
+        const titleBtn = document.getElementById('projectTitle');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
 
         // Functions
+        function Project(name, stitches, rows, stitchesPerRow, totalRows) {
+            this.name = name;
+            this.stitches = stitches;
+            this.rows = rows;
+            this.stitchesPerRow = stitchesPerRow;
+            this.totalRows = totalRows;
+        }
+
+        function defaultProject() {
+            return [new Project('Project 1', 0, 0, 40, 10)];
+        }
+
+        function initializeProject() {
+            let retrievedProject = JSON.parse(localStorage.getItem("savedProjects"));
+            if (retrievedProject == null) {
+                return defaultProject();
+            } else {
+                return retrievedProject;
+            }
+        }
+
+        function updateDisplay() {
+            let active = projects[activeProject];
+            stitchDisplay.innerText = active.stitches;
+            rowDisplay.innerText = active.rows;
+
+            localStorage.setItem("savedProjects", JSON.stringify(projects));
+            localStorage.setItem('savedActiveProject', activeProject);
+
+            document.getElementById('projectTitle').innerText = active.name;
+            document.getElementById('projectTitleModal').value = active.name;
+            document.getElementById('stitchesPerRowInput').value = active.stitchesPerRow;
+            document.getElementById('totalRowsInput').value = active.totalRows;
+        }
+
+        function fillDropdownList() {
+            document.getElementById('dropdownList').innerHTML = projects
+            .map((project, index) => ({ project, index })) 
+            .filter(({ index }) => index !== activeProject) 
+            .map(({ project, index }) => `<li data-index="${index}">${project.name}</li>`)
+            .join('');
+        }
+
+        function nextNumber() {
+            let maxNumber = 0;
+            const numberPattern = /^project\s+(\d+)$/i;
+            projects.forEach(obj => {
+                const match = obj.name.match(numberPattern);
+                if (match) {
+                    const currentNumber = parseInt(match[1], 10);
+                    if (currentNumber > maxNumber) {
+                        maxNumber = currentNumber;
+                    }
+                }
+            });
+            return maxNumber + 1;
+        }
 
         function updateText(notificationText) {
             notification.innerText = notificationText;
@@ -281,69 +498,139 @@
         }
 
         function doMath() {
-            if (rows === totalRows) {
-               updateText("Congratulations, you've finished!"); }
-            else {
-               updateText(""); }
+            let active = projects[activeProject];
+            if (active.rows === active.totalRows) {
+                updateText("Congratulations, you've finished!"); 
+            } else {
+                updateText(""); 
+            }
         }
 
-        // --- STITCH LOGIC ---
+        // Initialization
+        window.onload = () => {
+            projects = initializeProject();
+            activeProject = parseInt(localStorage.getItem('savedActiveProject')) || 0;
+            updateDisplay();
+        };
+
+        // Event Listeners: Overlay blockers (Prevents click-through)
+        dropdownOverlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.style.display = 'none';
+            dropdownOverlay.style.display = 'none';
+            titleBtn.classList.remove('active');
+        });
+
+        document.querySelectorAll('.modal').forEach(m => {
+            m.addEventListener('click', (e) => {
+                if (e.target === m) {
+                    e.stopPropagation();
+                }
+            });
+        });
+
+        // Event Listeners: Dropdown
+        titleBtn.addEventListener('click', () => {
+            if (window.getComputedStyle(dropdown).display === 'none') {
+                fillDropdownList();
+                dropdown.style.display = 'flex';
+                dropdownOverlay.style.display = 'block';
+                titleBtn.classList.add('active');
+            } else {
+                dropdown.style.display = 'none'; 
+                dropdownOverlay.style.display = 'none'; 
+                titleBtn.classList.remove('active');
+            }
+        });
+
+        document.getElementById('dropdownList').addEventListener('click', (event) => {
+            if (event.target.tagName === 'LI') {
+                const itemKey = event.target.getAttribute('data-index');
+                activeProject = parseInt(itemKey, 10);
+                updateDisplay();
+                
+                dropdown.style.display = 'none';
+                dropdownOverlay.style.display = 'none';
+                titleBtn.classList.remove('active');
+                restoreBtn.style.display = 'none';
+            }
+        });
+
+        document.getElementById('btnNewProject').addEventListener('click', () => {
+            projects.push(new Project(`Project ${nextNumber()}`, 0, 0, 1, 1));
+            activeProject = projects.length - 1;
+            updateDisplay();
+            
+            dropdown.style.display = 'none';
+            dropdownOverlay.style.display = 'none';
+            titleBtn.classList.remove('active');
+            
+            modal.style.display = 'flex';
+        });
+
+        // Event Listeners: Stitch Counters
         document.getElementById('stitchPlus').addEventListener('click', () => {
-            if (rows < totalRows) {
-               stitches++;
-               if (stitches >= stitchesPerRow) {
-                   stitches = 0;
-                   rows++;
-                   }
-               updateDisplay();
-               doMath();
-               }
-            else {
-               updateText("Please change total rows goal if you wish to continue →"); }
+            let active = projects[activeProject];
+            if (active.rows < active.totalRows) {
+                active.stitches++;
+                if (active.stitches >= active.stitchesPerRow) {
+                    active.stitches = 0;
+                    active.rows++;
+                }
+                updateDisplay();
+                doMath();
+            } else {
+                updateText("Please change total rows goal if you wish to continue →"); 
+            }
         });
 
         document.getElementById('stitchMinus').addEventListener('click', () => {
-            if (stitches === 0) {
-                if (rows > 0) {
-                    rows--;
-                    stitches = stitchesPerRow - 1;
+            let active = projects[activeProject];
+            if (active.stitches === 0) {
+                if (active.rows > 0) {
+                    active.rows--;
+                    active.stitches = active.stitchesPerRow - 1;
                 }
             } else {
-                stitches--;
+                active.stitches--;
             }
             updateDisplay();
             updateText("");
         });
 
-        // --- ROW LOGIC ---
+        // Event Listeners: Row Counters
         document.getElementById('rowPlus').addEventListener('click', () => {
-            if (rows < totalRows) {
-               rows++;
-               doMath();
-               if (rows === totalRows) {
-                  storedStitches = stitches;
-                  stitches = 0;
-                  updateDisplay();
-                  restoreBtn.style.display = 'flex';
-                  }
-               else { updateDisplay(); }
-               }
-            else {
-               updateText("Please change total rows goal if you wish to continue →") };               
+            let active = projects[activeProject];
+            if (active.rows < active.totalRows) {
+                active.rows++;
+                doMath();
+                if (active.rows === active.totalRows) {
+                    storedStitches = active.stitches;
+                    active.stitches = 0;
+                    updateDisplay();
+                    restoreBtn.style.display = 'flex';
+                } else { 
+                    updateDisplay(); 
+                }
+            } else {
+                updateText("Please change total rows goal if you wish to continue →");
+            }               
         });
 
         document.getElementById('rowMinus').addEventListener('click', () => {
-            if (rows > 0) {
-                rows--;
+            let active = projects[activeProject];
+            if (active.rows > 0) {
+                active.rows--;
             }
             updateDisplay();
             updateText("");
         });
 
-        // --- RESTORE LOGIC ---
+        // Event Listeners: Restore Swipes
         document.getElementById('restoreBtn').addEventListener('click', () => {
-            stitches = storedStitches;
-            rows = totalRows - 1;
+            let active = projects[activeProject];
+            active.stitches = storedStitches;
+            active.rows = active.totalRows - 1;
             updateDisplay();
             doMath();
             restoreBtn.style.display = 'none';
@@ -372,30 +659,57 @@
             }
         });
         
-        // --- SETTINGS LOGIC ---
-        const modal = document.getElementById('settingsModal');
+        // Event Listeners: Settings Modals
         document.getElementById('settingsBtn').addEventListener('click', () => {
             modal.style.display = 'flex';
         });
+        
+        document.getElementById('projectTitleModal').addEventListener('change', function(event) {
+            projects[activeProject].name = event.target.value;
+            updateDisplay();
+        });
+        
+        document.getElementById('deleteProjectBtn').addEventListener('click', () => {
+            document.getElementById('confirmModal').style.display = 'flex';
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+            document.getElementById('confirmModal').style.display = 'none';
+        });
+        
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            projects.splice(activeProject, 1);
+            if (projects.length < 1) {
+                projects = defaultProject(); 
+            }
+            activeProject = 0;
+            updateDisplay();
+            document.getElementById('confirmModal').style.display = 'none';
+            modal.style.display = 'none';
+            fillDropdownList();
+            document.getElementById('dropdown').style.display = 'flex';
+        });
 
         document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            let active = projects[activeProject];
             const inputTotalRows = parseInt(document.getElementById('totalRowsInput').value) || 1;
-            if (rows > inputTotalRows || (rows === inputTotalRows && stitches > 0)) {
-               updateTextModal("You've already finished more rows than the goal"); 
+            
+            if (active.rows > inputTotalRows || (active.rows === inputTotalRows && active.stitches > 0)) {
+                updateTextModal("You've already finished more rows than the goal"); 
             } else {
-               totalRows = inputTotalRows;
-               stitchesPerRow = parseInt(document.getElementById('stitchesPerRowInput').value) || 1;
-               modal.style.display = 'none';
-               updateDisplay();
-               updateTextModal("");
-               doMath();
+                active.totalRows = inputTotalRows;
+                active.stitchesPerRow = parseInt(document.getElementById('stitchesPerRowInput').value) || 1;
+                modal.style.display = 'none';
+                updateDisplay();
+                updateTextModal("");
+                doMath();
             }
         });
 
-        // Register Service Worker for PWA
+        // Event Listeners: Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker Registered'));
+                .then(() => console.log('Service Worker Registered'));
         }
     </script>
 </body>
