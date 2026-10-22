@@ -411,37 +411,24 @@
             pointer-events: auto;
         }
 
-        .sb-group-name {
+        /* Always an input (same approach as #projectTitleModal), so nothing changes visually
+           between typing and not typing. The id selector also beats the global input:focus ring. */
+        #sbGroupName {
             all: unset;
             box-sizing: border-box;
-            font-family: inherit;
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: left;
-            color: var(--main-green);
-            padding: 8px 4px;
-            min-height: 44px;
-            cursor: pointer;
-            border-bottom: 1px dashed rgba(90, 128, 103, 0.5);
-            word-break: break-word;
-        }
-
-        .sb-group-input {
-            all: unset;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: left;
-            color: var(--main-green);
-            padding: 8px 4px;
-            min-height: 44px;
+            display: block;
             width: 100%;
+            min-height: 44px;
+            padding: 8px 4px;
+            font-family: inherit;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: left;
+            color: var(--main-green);
             background-color: transparent;
             border: 0px;
             user-select: text;
             -webkit-user-select: text;
-            word-break: break-word;
         }
 
         .sb-summary {
@@ -921,7 +908,7 @@
     </button>
 
     <aside class="sidebar" id="sidebar">
-        <button class="sb-group-name" id="sbGroupName"></button>
+        <input type="text" id="sbGroupName" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Group name">
         <div class="sb-summary" id="sbSummary"></div>
         <ul class="list" id="sbList"></ul>
         <button class="delete-btn" id="sbDeleteGroup">Delete group</button>
@@ -1567,7 +1554,7 @@
             const g = currentGroup();
             if (!g) return;
             const a = active();
-            $('sbGroupName').textContent = g.name;
+            if (document.activeElement !== $('sbGroupName')) $('sbGroupName').value = g.name;
             const members = projects.filter(p => p.groupId === g.id).sort(byName);
             if (a && a.showGroupSummary) {
                 const done = members.filter(isFinished).length;
@@ -1896,37 +1883,23 @@
             switchToProject(parseInt(li.dataset.index, 10));
         });
 
-        $('sbGroupName').addEventListener('click', () => {
+        $('sbGroupName').addEventListener('blur', () => {
             const g = currentGroup();
             if (!g) return;
-            const el = $('sbGroupName');
-            const currentName = g.name;
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'sb-group-input';
-            input.value = currentName;
+            const newName = $('sbGroupName').value.trim();
+            if (newName) g.name = newName;   // empty -> keep the old name
+            updateDisplay();                 // re-renders the input with the saved name
+        });
 
-            el.replaceWith(input);
-            input.focus();
-            input.select();
-
-            const save = () => {
-                const newName = input.value.trim();
-                if (newName) {
-                    g.name = newName;
-                }
-                updateDisplay();
-            };
-
-            input.addEventListener('blur', save);
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    input.blur();
-                } else if (e.key === 'Escape') {
-                    input.value = currentName;
-                    input.blur();
-                }
-            });
+        $('sbGroupName').addEventListener('keydown', (e) => {
+            const input = $('sbGroupName');
+            if (e.key === 'Enter') {
+                input.blur();
+            } else if (e.key === 'Escape') {
+                const g = currentGroup();
+                if (g) input.value = g.name;
+                input.blur();
+            }
         });
 
         $('sbDeleteGroup').addEventListener('click', () => {
