@@ -76,6 +76,18 @@
             transition: all 0.2s;
         }
 
+        .project-title .title-group {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+
+        .project-title .title-name {
+            display: block;
+        }
+
         .project-title.active {
             background-color: var(--bg-color);
             border-color: transparent;
@@ -118,24 +130,56 @@
             border-radius: 8px;
             font-size: 1.2rem;
             transition: background-color 0.2s;
+            min-height: 20px;
         }
 
         .list li:active {
             background-color: rgba(90, 128, 103, 0.15);
         }
 
-        #btnNewProject {
+        .list li.grp {
+            position: relative;
+            font-weight: bold;
+            padding-left: 44px;
+            padding-right: 44px;
+        }
+
+        .list li.grp .chev {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: normal;
+        }
+
+        .list li.child {
+            margin-left: 10px;
+            border-left: 3px solid rgba(90, 128, 103, 0.3);
+            border-radius: 0 8px 8px 0;
+            font-size: 1.1rem;
+        }
+
+        #btnNewProject, #btnNewGroup {
             background-color: var(--main-green);
             color: white;
             border: none;
             padding: 12px;
+            min-height: 44px;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        #btnNewProject:active {
+        #btnNewGroup {
+            margin-top: 10px;
+        }
+
+        #btnNewProject:active, #btnNewGroup:active {
             transform: scale(0.95);
         }
 
@@ -147,6 +191,36 @@
             margin-bottom: 20px;
             width: 100%;
             flex-grow: 1;
+        }
+
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            flex-grow: 1;
+            box-sizing: border-box;
+            padding: 0 12vw;
+        }
+
+        .big-btn {
+            width: 100%;
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            min-height: 52px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .big-btn:active {
+            transform: scale(0.97);
         }
 
         .counter {
@@ -189,6 +263,12 @@
             transform: scale(0.95);
         }
 
+        .restore {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .restore-btn {
             display: none;
             touch-action: pan-y;
@@ -196,6 +276,8 @@
             color: white;
             border: none;
             padding: 10px 20px;
+            min-height: 44px;
+            align-items: center;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
@@ -215,6 +297,7 @@
             font-size: 3rem;
             font-weight: bold;
             background: transparent;
+            white-space: nowrap;
         }
 
         .gear-icon {
@@ -248,17 +331,146 @@
             display: none;
         }
 
-        #notificationModal {
+        #notificationModal, .modal-note {
             font-size: 1rem;
             text-align: center;
             padding: 5px 10px;
             min-height: 1.2em;
         }
 
-        #notificationModal:empty {
+        #notificationModal:empty, .modal-note:empty {
             display: none;
         }
 
+        /* ---------- Sidebar ---------- */
+        .sidebar-arrow {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 8px;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: var(--main-green);
+            cursor: pointer;
+            z-index: 5;
+            touch-action: manipulation;
+        }
+
+        .sidebar-arrow svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+            transition: transform 0.25s;
+        }
+
+        .sidebar-arrow.open {
+            z-index: 45;
+        }
+
+        .sidebar-arrow.open svg {
+            transform: rotate(180deg);
+        }
+
+        #sidebarOverlay {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 40;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: min(78vw, 320px);
+            box-sizing: border-box;
+            background: var(--bg-color);
+            padding: 66px 18px 20px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 41;
+            transform: translateX(-105%);
+            transition: transform 0.25s;
+            box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .sb-group-name {
+            all: unset;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: left;
+            color: var(--main-green);
+            padding: 8px 4px;
+            min-height: 44px;
+            cursor: pointer;
+            border-bottom: 1px dashed rgba(90, 128, 103, 0.5);
+            word-break: break-word;
+        }
+
+        .sb-summary {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .sb-summary:empty {
+            display: none;
+        }
+
+        .sidebar .list {
+            flex-grow: 1;
+            max-height: none;
+            margin-bottom: 0;
+        }
+
+        .sidebar .list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            font-size: 1.15rem;
+            min-height: 20px;
+            word-break: break-word;
+        }
+
+        .sidebar .list li.current {
+            opacity: 0.45;
+            cursor: default;
+            font-style: italic;
+        }
+
+        .sidebar .list li .prog {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            opacity: 0.85;
+        }
+
+        .sb-empty {
+            font-size: 1rem;
+            opacity: 0.7;
+            padding: 12px;
+        }
+
+        /* ---------- Modals ---------- */
         .modal {
             display: none;
             position: fixed;
@@ -281,9 +493,19 @@
             gap: 20px;
             border: 0px solid transparent;
             width: 66vw;
+            max-height: calc(88dvh - 60px);
+            overflow-y: auto;
         }
 
-        .modal-content label {
+        .modal-content.wide {
+            width: 94vw;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+            max-height: 90dvh;
+        }
+
+        .modal-content label, .modal-content .row {
             font-size: 1.2rem;
             display: flex;
             justify-content: space-between;
@@ -298,9 +520,30 @@
             border: 1px solid var(--main-green);
             border-radius: 5px;
             text-align: center;
+            user-select: text;
+            -webkit-user-select: text;
+            min-height: 34px;
+            box-sizing: content-box;
+            font-family: inherit;
+            color: var(--main-green);
+            background: white;
+        }
+
+        .modal-content input.wide-input {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .modal-content input[type="checkbox"] {
+            width: 26px;
+            height: 26px;
+            min-height: 0;
+            accent-color: var(--main-green);
+            padding: 0;
         }
          
-        input:focus {
+        input:focus, textarea:focus {
             outline: none; 
             box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4); 
             border-radius: 5px; 
@@ -308,24 +551,35 @@
          
         #projectTitleModal {
             all: unset;
-            color: var(--main-green)
+            color: var(--main-green);
             border: 0px;
             width: 100%;
             background-color: transparent;
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 15px;
+            user-select: text;
+            -webkit-user-select: text;
         }         
                  
         .button-group {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            gap: 10px;
             margin-top: 20px;
+        }
+
+        .button-group.stack {
+            flex-direction: column;
         }
         
         #confirmModal .button-group {
             margin-top: 0px; 
+        }
+
+        .modal-content h2 + .button-group, .dlg-msg + .button-group {
+            margin-top: 0;
         }
 
         .save-btn {
@@ -333,9 +587,11 @@
             color: white;
             border: none;
             padding: 10px;
+            min-height: 44px;
             font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
+            font-family: inherit;
         }
 
         .delete-btn {
@@ -343,25 +599,340 @@
             color: var(--main-green);
             border: 1px solid var(--main-green);
             padding: 10px;
+            min-height: 44px;
             font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
+            font-family: inherit;
+        }
+
+        .button-group.stack .save-btn, .button-group.stack .delete-btn {
+            font-size: 0.95rem;
+        }
+
+        .dlg-msg {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.4;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .field-block {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .field-btn {
+            background: white;
+            color: var(--main-green);
+            border: 1px solid var(--main-green);
+            border-radius: 5px;
+            min-height: 44px;
+            padding: 6px 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            max-width: 55%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .outline-btn {
+            background: transparent;
+            color: var(--main-green);
+            border: 1px solid var(--main-green);
+            border-radius: 25px;
+            min-height: 44px;
+            padding: 8px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .outline-btn:disabled {
+            opacity: 0.4;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--main-green);
+            text-decoration: underline;
+            font-size: 1rem;
+            font-family: inherit;
+            min-height: 44px;
+            cursor: pointer;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .hint:empty {
+            display: none;
+        }
+
+        /* Advanced settings */
+        .adv-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .adv-label {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .seg {
+            display: flex;
+            border: 1px solid var(--main-green);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .seg button {
+            flex: 1;
+            min-height: 44px;
+            background: transparent;
+            color: var(--main-green);
+            border: none;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            padding: 4px 6px;
+        }
+
+        .seg button + button {
+            border-left: 1px solid var(--main-green);
+        }
+
+        .seg button.on {
+            background: var(--main-green);
+            color: white;
+        }
+
+        .modal-content label.toggle {
+            font-size: 1rem;
+            min-height: 44px;
+        }
+
+        /* Pattern editor */
+        .tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tabs button {
+            flex: 1;
+            min-height: 44px;
+            background: transparent;
+            color: var(--main-green);
+            border: 1px solid var(--main-green);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .tabs button.on {
+            background: var(--main-green);
+            color: white;
+        }
+
+        #peTextarea {
+            width: 100%;
+            height: 36vh;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--main-green);
+            background: white;
+            border: 1px solid var(--main-green);
+            border-radius: 8px;
+            resize: none;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .pill-head, .pill-row {
+            display: grid;
+            grid-template-columns: 44px 1fr 56px 68px 44px;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill-head {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .pill-list {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 38vh;
+            overflow-y: auto;
+            padding: 2px;
+            margin-bottom: 10px;
+        }
+
+        .pill-row {
+            position: relative;
+            background: white;
+            border: 1px solid var(--main-green);
+            border-radius: 25px;
+            padding: 2px 4px;
+            box-sizing: border-box;
+            min-height: 48px;
+        }
+
+        .pill-row.dragging {
+            z-index: 5;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+            transition: none !important;
+        }
+
+        .pill-range {
+            font-weight: bold;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        .modal-content input.pill-len, .modal-content input.pill-st {
+            width: auto;
+            min-width: 0;
+            height: 36px;
+            min-height: 0;
+            padding: 2px;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+        }
+
+        .grip {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+            cursor: grab;
+            opacity: 0.7;
+            -webkit-touch-callout: none;
+        }
+
+        .pill-del {
+            width: 44px;
+            height: 44px;
+            background: none;
+            border: none;
+            color: var(--main-green);
+            font-size: 1.6rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .pill-del:disabled {
+            opacity: 0.25;
+        }
+
+        .view-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .pill {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            background: var(--main-green);
+            color: white;
+            border: 1px solid var(--main-green);
+            border-radius: 25px;
+            padding: 10px 18px;
+            font-size: 1.05rem;
+        }
+
+        .pill.progress {
+            background: transparent;
+            color: var(--main-green);
+            border-style: dashed;
+        }
+
+        .pill b {
+            font-weight: bold;
+        }
+
+        .pick-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 45vh;
+            overflow-y: auto;
+        }
+
+        .pick-list .opt {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            cursor: pointer;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .pick-list .opt:active {
+            background-color: rgba(90, 128, 103, 0.15);
+        }
+
+        .pick-list label.check {
+            min-height: 44px;
+            justify-content: flex-start;
         }
 
     </style>
 </head>
 <body>
     <div id="dropdownOverlay"></div>
+    <div id="sidebarOverlay"></div>
+
+    <button class="sidebar-arrow" id="sidebarArrow" aria-label="Group navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </button>
+
+    <aside class="sidebar" id="sidebar">
+        <button class="sb-group-name" id="sbGroupName"></button>
+        <div class="sb-summary" id="sbSummary"></div>
+        <ul class="list" id="sbList"></ul>
+        <button class="delete-btn" id="sbDeleteGroup">Delete group</button>
+    </aside>
     
     <div class="header-section">
         <h1><button class="project-title" id="projectTitle"></button></h1>
         <div class="dropdown" id="dropdown">
             <ul class="list" id="dropdownList"></ul>
             <button id="btnNewProject">+ New Project</button>
+            <button id="btnNewGroup">+ New Group</button>
         </div>
     </div>
 
-    <div class="counter-section">
+    <div class="counter-section" id="counterSection">
         <div class="counter">
             <div class="label">Stitches</div>
             <div class="controls">
@@ -380,8 +951,16 @@
         </div>
     </div>
 
+    <div class="empty-state" id="emptyState">
+        <button class="big-btn" id="emptyAddExisting">Add existing project</button>
+        <button class="big-btn" id="emptyNewProject">New project</button>
+    </div>
+
     <div id="notification"></div>
-    <div class="restore"><button class="restore-btn" id="restoreBtn">Restore stitch count</button></div>
+    <div class="restore" id="restoreArea">
+        <button class="restore-btn" id="restoreBtn">Restore stitch count</button>
+        <button class="restore-btn" id="undoBtn">Undo</button>
+    </div>
     
     <div class="gear-icon" id="settingsBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -389,21 +968,107 @@
         </svg>
     </div>
     
+    <!-- Main settings -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <input type="text" id="projectTitleModal">
-            <label>
-                Stitches per row:
-                <input type="number" id="stitchesPerRowInput" value="40" min="1">
-            </label>
-            <label>
-                Total rows goal:
-                <input type="number" id="totalRowsInput" value="10" min="1">
-            </label>
+            <div class="row">
+                <span>Group:</span>
+                <button class="field-btn" id="groupField"><span id="groupFieldVal">No group</span> ▾</button>
+            </div>
+            <div class="field-block" id="simpleFields">
+                <label>
+                    Stitches per row:
+                    <input type="number" id="stitchesPerRowInput" value="40" min="1">
+                </label>
+                <label>
+                    Total rows goal:
+                    <input type="number" id="totalRowsInput" value="10" min="1">
+                </label>
+            </div>
+            <div class="field-block" id="patternFields" style="display:none">
+                <button class="outline-btn" id="openPatternEditorBtn">Open pattern editor</button>
+                <div class="hint" id="patternSummary"></div>
+            </div>
+            <div class="field-block" id="freeformFields" style="display:none">
+                <button class="outline-btn" id="markCompletedBtn">Mark as completed</button>
+            </div>
             <div id="notificationModal"></div>
+            <button class="link-btn" id="advancedBtn">Advanced settings…</button>
             <div class="button-group">
                 <button class="delete-btn" id="deleteProjectBtn">Delete Project</button>
                 <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced settings -->
+    <div class="modal" id="advancedModal">
+        <div class="modal-content wide">
+            <h2>Advanced settings</h2>
+            <div class="adv-block">
+                <div class="adv-label">Mode</div>
+                <div class="seg" data-key="mode">
+                    <button data-v="simple">Simple</button>
+                    <button data-v="pattern">Pattern</button>
+                    <button data-v="freeform">Freeform</button>
+                </div>
+            </div>
+            <div class="adv-block" data-notfree>
+                <div class="adv-label">Row +/- behavior</div>
+                <div class="seg" data-key="rowAdvanceBehavior">
+                    <button data-v="fresh">Fresh row (0 stitches)</button>
+                    <button data-v="keep">Keep stitches</button>
+                </div>
+            </div>
+            <div class="adv-block" data-notfree>
+                <div class="adv-label">Stitch display</div>
+                <div class="seg" data-key="stitchDisplay">
+                    <button data-v="current">Current only</button>
+                    <button data-v="currentTarget">Current / Target</button>
+                </div>
+            </div>
+            <div class="adv-block" data-notfree>
+                <div class="adv-label">Row display</div>
+                <div class="seg" data-key="rowDisplay">
+                    <button data-v="current">Current only</button>
+                    <button data-v="currentTotal">Current / Total</button>
+                </div>
+            </div>
+            <label class="toggle">Show progress in sidebar <input type="checkbox" id="advShowProgress"></label>
+            <label class="toggle">Show group summary <input type="checkbox" id="advShowSummary"></label>
+            <div class="adv-block" data-free style="display:none">
+                <button class="outline-btn" id="viewPatternBtn">View pattern</button>
+                <button class="outline-btn" id="exportPatternBtn">Export pattern</button>
+            </div>
+            <div class="modal-note" id="notificationAdv"></div>
+            <div class="button-group">
+                <button class="delete-btn" id="advBackBtn">Back</button>
+                <button class="save-btn" id="advSaveBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pattern editor -->
+    <div class="modal" id="patternEditorModal">
+        <div class="modal-content wide">
+            <div class="tabs">
+                <button data-tab="text" id="peTabText">Text</button>
+                <button data-tab="pills" id="peTabPills" class="on">Pills</button>
+            </div>
+            <div id="peText" style="display:none">
+                <textarea id="peTextarea" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+                <div class="hint" style="margin-top:8px">Separate with commas, semicolons or new lines. Examples: <b>40, 42, 42</b> or <b>row 1: 40; row 2-3: 42</b></div>
+            </div>
+            <div id="pePills">
+                <div class="pill-head"><span></span><span>Rows</span><span># rows</span><span>Stitches</span><span></span></div>
+                <div class="pill-list" id="pillList"></div>
+                <button class="outline-btn" id="addPillBtn" style="width:100%">+ Add pill</button>
+            </div>
+            <div class="modal-note" id="patternNote"></div>
+            <div class="button-group">
+                <button class="delete-btn" id="peCancel">Cancel</button>
+                <button class="save-btn" id="peSave">Save</button>
             </div>
         </div>
     </div>
@@ -419,30 +1084,216 @@
     </div>
 
     <script>
-        // State Variables
+        // ===== State Variables =====
         let projects = [];
-        let activeProject = 0;
+        let groups = [];
+        let activeProject = 0;       // index into projects; -1 while in the empty-group state
+        let activeGroupId = null;    // only set while in the empty-group state
         let storedStitches = 0;
-        let startX = 0;
-        
-        // DOM Elements
-        const stitchDisplay = document.getElementById('stitchDisplay');
-        const rowDisplay = document.getElementById('rowDisplay');
-        const notification = document.getElementById('notification');
-        const notificationModal = document.getElementById('notificationModal');
-        const restoreBtn = document.getElementById('restoreBtn');
-        const modal = document.getElementById('settingsModal');
-        const dropdown = document.getElementById('dropdown');
-        const titleBtn = document.getElementById('projectTitle');
-        const dropdownOverlay = document.getElementById('dropdownOverlay');
+        let pendingUndo = null;      // {kind, fn}
+        let settingsPending = null;  // advanced settings waiting for the main "Save & Close"
+        let advDraft = null;         // working copy inside the Advanced modal
+        let ed = null;               // pattern editor state
+        const collapsedGroups = new Set();
+        const MAX_ROWS = 2000;
 
-        // Functions
+        const MSG = {
+            finished: "Please change total rows goal if you wish to continue →",
+            locked: "Project is locked — unlock in settings to continue.",
+            needStitch: "Add at least one stitch before going up a row.",
+            tooManyRows: "You've already finished more rows than the goal",
+            tooManyPatternRows: "You've already finished more rows than the pattern has",
+            nothing: "Nothing to export yet."
+        };
+
+        // ===== DOM Elements =====
+        const $ = (id) => document.getElementById(id);
+        const stitchDisplay = $('stitchDisplay');
+        const rowDisplay = $('rowDisplay');
+        const notification = $('notification');
+        const notificationModal = $('notificationModal');
+        const restoreBtn = $('restoreBtn');
+        const undoBtn = $('undoBtn');
+        const modal = $('settingsModal');
+        const advancedModal = $('advancedModal');
+        const patternEditorModal = $('patternEditorModal');
+        const dropdown = $('dropdown');
+        const dropdownList = $('dropdownList');
+        const titleBtn = $('projectTitle');
+        const dropdownOverlay = $('dropdownOverlay');
+        const sidebar = $('sidebar');
+        const sidebarOverlay = $('sidebarOverlay');
+        const sidebarArrow = $('sidebarArrow');
+        const counterSection = $('counterSection');
+        const emptyState = $('emptyState');
+        const pillList = $('pillList');
+
+        // ===== Helpers =====
+        function uid(prefix) {
+            return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        }
+
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+        }
+
+        function clone(o) {
+            return JSON.parse(JSON.stringify(o));
+        }
+
+        function byName(a, b) {
+            return a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'});
+        }
+
+        function active() {
+            return projects[activeProject] || null;
+        }
+
+        function isLocked(p) {
+            return p.mode === 'freeform' && p.completed;
+        }
+
+        // ===== Pattern helpers =====
+        // pills: [{start, end, stitches}] — contiguous, covering rows 1..N
+        // blocks (used by the editor): [{len, stitches}]
+        function patternLength(pills) {
+            return pills && pills.length ? pills[pills.length - 1].end : 0;
+        }
+
+        function expandPills(pills) {
+            const arr = [];
+            pills.forEach(pl => {
+                for (let r = pl.start; r <= pl.end; r++) arr[r - 1] = pl.stitches;
+            });
+            return arr;
+        }
+
+        function countsToPills(counts) {
+            const pills = [];
+            counts.forEach((c, i) => {
+                const last = pills[pills.length - 1];
+                if (last && last.stitches === c) {
+                    last.end = i + 1;
+                } else {
+                    pills.push({start: i + 1, end: i + 1, stitches: c});
+                }
+            });
+            return pills;
+        }
+
+        function blocksToPills(blocks) {
+            let r = 1;
+            return blocks.map(b => {
+                const pl = {start: r, end: r + b.len - 1, stitches: b.stitches};
+                r += b.len;
+                return pl;
+            });
+        }
+
+        function pillsToBlocks(pills) {
+            return pills.map(p => ({len: p.end - p.start + 1, stitches: p.stitches}));
+        }
+
+        function validPattern(p) {
+            if (!Array.isArray(p) || !p.length) return false;
+            let expected = 1;
+            for (const pl of p) {
+                if (!pl || pl.start !== expected || !(pl.end >= pl.start) || !(pl.stitches >= 1)) return false;
+                expected = pl.end + 1;
+            }
+            return true;
+        }
+
+        function pillsToText(pills) {
+            return pills.map(p => p.start === p.end
+                ? `row ${p.start}: ${p.stitches}`
+                : `row ${p.start}-${p.end}: ${p.stitches}`).join('\n');
+        }
+
+        function parsePatternText(text) {
+            const tokens = text.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+            if (!tokens.length) return {error: 'Pattern must have at least 1 row'};
+            const rowsMap = {};
+            let cursor = 0;
+            let maxRow = 0;
+            for (const tok of tokens) {
+                let start, end, countStr;
+                if (tok.includes(':')) {
+                    const m = tok.match(/^(?:rows?\s*)?(\d+)\s*(?:(?:-|–|—|to)\s*(\d+))?\s*:\s*(.*)$/i);
+                    if (!m) return {error: `Row ${cursor + 1}: couldn't read a stitch count`};
+                    start = parseInt(m[1], 10);
+                    end = m[2] ? parseInt(m[2], 10) : start;
+                    countStr = m[3].trim();
+                } else {
+                    start = end = cursor + 1;
+                    countStr = tok;
+                }
+                if (start < 1) return {error: `Row ${start} is invalid (rows start at 1)`};
+                if (end < start) return {error: `Rows ${start}–${end}: the range runs backwards`};
+                if (end > MAX_ROWS) return {error: `Row ${end} is too high (max ${MAX_ROWS} rows)`};
+                if (!/^-?\d+$/.test(countStr)) return {error: `Row ${start}: couldn't read a stitch count`};
+                const count = parseInt(countStr, 10);
+                if (count < 1) return {error: `Row ${start} has invalid stitch count`};
+                for (let r = start; r <= end; r++) {
+                    if (rowsMap[r] !== undefined) return {error: `Row ${r} is defined twice`};
+                    rowsMap[r] = count;
+                }
+                cursor = end;
+                if (end > maxRow) maxRow = end;
+            }
+            const counts = [];
+            for (let r = 1; r <= maxRow; r++) {
+                if (rowsMap[r] === undefined) {
+                    let next = r + 1;
+                    while (rowsMap[next] === undefined) next++;
+                    if (r === 1) return {error: `Row 1 is not defined (missing before row ${next})`};
+                    return {error: `Row ${r} is not defined (missing between row ${r - 1} and row ${next})`};
+                }
+                counts.push(rowsMap[r]);
+            }
+            return {pills: countsToPills(counts)};
+        }
+
+        // ===== Project model =====
         function Project(name, stitches, rows, stitchesPerRow, totalRows) {
+            this.id = uid('p');
             this.name = name;
+            this.mode = 'simple';
             this.stitches = stitches;
             this.rows = rows;
             this.stitchesPerRow = stitchesPerRow;
             this.totalRows = totalRows;
+            this.pattern = null;
+            this.log = [];
+            this.completed = false;
+            this.referencePattern = null;
+            this.rowAdvanceBehavior = 'keep';
+            this.stitchDisplay = 'current';
+            this.rowDisplay = 'current';
+            this.showProgressInSidebar = false;
+            this.showGroupSummary = false;
+            this.groupId = null;
+        }
+
+        function normalizeProject(raw) {
+            const p = Object.assign(new Project(raw && raw.name ? raw.name : 'Project', 0, 0, 40, 10), raw || {});
+            if (!['simple', 'pattern', 'freeform'].includes(p.mode)) p.mode = 'simple';
+            p.stitches = Math.max(0, parseInt(p.stitches, 10) || 0);
+            p.rows = Math.max(0, parseInt(p.rows, 10) || 0);
+            if (p.mode === 'pattern' && !validPattern(p.pattern)) p.mode = 'simple';
+            if (p.mode === 'simple') {
+                p.stitchesPerRow = Math.max(1, parseInt(p.stitchesPerRow, 10) || 40);
+                p.totalRows = Math.max(1, parseInt(p.totalRows, 10) || 10);
+            }
+            if (!Array.isArray(p.log)) p.log = [];
+            p.completed = !!p.completed;
+            if (!['fresh', 'keep'].includes(p.rowAdvanceBehavior)) p.rowAdvanceBehavior = 'keep';
+            if (!['current', 'currentTarget'].includes(p.stitchDisplay)) p.stitchDisplay = 'current';
+            if (!['current', 'currentTotal'].includes(p.rowDisplay)) p.rowDisplay = 'current';
+            p.showProgressInSidebar = !!p.showProgressInSidebar;
+            p.showGroupSummary = !!p.showGroupSummary;
+            if (!p.groupId) p.groupId = null;
+            return p;
         }
 
         function defaultProject() {
@@ -450,34 +1301,155 @@
         }
 
         function initializeProject() {
-            let retrievedProject = JSON.parse(localStorage.getItem("savedProjects"));
-            if (retrievedProject == null) {
+            let retrievedProject = null;
+            try { retrievedProject = JSON.parse(localStorage.getItem("savedProjects")); } catch (e) { retrievedProject = null; }
+            if (retrievedProject == null || !Array.isArray(retrievedProject)) {
                 return defaultProject();
             } else {
-                return retrievedProject;
+                return retrievedProject.map(normalizeProject);
+            }
+        }
+
+        function initializeGroups() {
+            let raw = null;
+            try { raw = JSON.parse(localStorage.getItem("savedGroups")); } catch (e) { raw = null; }
+            if (!Array.isArray(raw)) return [];
+            return raw.filter(g => g && g.id && typeof g.name === 'string').map(g => ({id: g.id, name: g.name}));
+        }
+
+        function getTotalRows(p) {
+            if (p.mode === 'simple') return p.totalRows;
+            if (p.mode === 'pattern') return patternLength(p.pattern);
+            return null;
+        }
+
+        function targetFor(p, rowIdx) {
+            if (p.mode === 'simple') return p.stitchesPerRow;
+            const arr = expandPills(p.pattern);
+            return arr[Math.min(rowIdx, arr.length - 1)];
+        }
+
+        function isFinished(p) {
+            return p.mode === 'freeform' ? !!p.completed : p.rows === getTotalRows(p);
+        }
+
+        function progressText(p) {
+            if (p.mode === 'freeform') return p.completed ? `${p.rows} ✓` : `${p.rows}`;
+            return `${p.rows}/${getTotalRows(p)}`;
+        }
+
+        function currentGroup() {
+            const a = active();
+            const gid = a ? a.groupId : activeGroupId;
+            return gid ? (groups.find(g => g.id === gid) || null) : null;
+        }
+
+        // freeform helpers
+        function loggedStitches(p, row) {
+            const e = p.log.find(x => x.row === row);
+            return e ? e.stitches : 0;
+        }
+
+        function setLog(p, row, st) {
+            const e = p.log.find(x => x.row === row);
+            if (e) e.stitches = st; else p.log.push({row: row, stitches: st});
+        }
+
+        function freeformCounts(p, includeCurrent) {
+            const c = [];
+            for (let i = 0; i < p.rows; i++) {
+                const s = loggedStitches(p, i);
+                if (s > 0) c.push(s);
+            }
+            if (includeCurrent && p.stitches > 0) c.push(p.stitches);
+            return c;
+        }
+
+        // After the pattern changes: keep rows/stitches consistent with it.
+        function reconcile(a) {
+            const len = patternLength(a.pattern);
+            if (a.rows > len) a.rows = len;
+            if (a.rows >= len) {
+                a.stitches = 0;
+            } else {
+                const t = targetFor(a, a.rows);
+                if (a.stitches >= t) a.stitches = t - 1;
+            }
+        }
+
+        function patternFitError(a, pills) {
+            const len = patternLength(pills);
+            if (a.rows > len || (a.rows === len && a.stitches > 0)) return MSG.tooManyPatternRows;
+            return null;
+        }
+
+        // ===== Core display / persistence =====
+        function persist() {
+            localStorage.setItem("savedProjects", JSON.stringify(projects));
+            localStorage.setItem("savedGroups", JSON.stringify(groups));
+            localStorage.setItem('savedActiveProject', activeProject);
+            localStorage.setItem('savedActiveGroup', activeGroupId || '');
+        }
+
+        function setCircle(el, text) {
+            el.innerText = text;
+            const n = text.length;
+            el.style.fontSize = n <= 3 ? '' : (n <= 5 ? '2rem' : (n <= 7 ? '1.5rem' : '1.15rem'));
+        }
+
+        function renderCounters(p) {
+            let sText, rText;
+            if (p.mode === 'freeform') {
+                sText = String(p.stitches);
+                rText = String(p.rows) + (p.completed ? ' ✓' : '');
+            } else {
+                const total = getTotalRows(p);
+                const t = targetFor(p, p.rows);
+                sText = p.stitchDisplay === 'currentTarget' ? `${p.stitches}/${t}` : String(p.stitches);
+                rText = p.rowDisplay === 'currentTotal' ? `${p.rows}/${total}` : String(p.rows);
+            }
+            setCircle(stitchDisplay, sText);
+            setCircle(rowDisplay, rText);
+        }
+
+        function renderHeader() {
+            const a = active();
+            const g = currentGroup();
+            if (a && g) {
+                titleBtn.innerHTML = `<span class="title-group">${esc(g.name)}</span><span class="title-name">${esc(a.name)}</span>`;
+            } else if (a) {
+                titleBtn.innerHTML = `<span class="title-name">${esc(a.name)}</span>`;
+            } else if (g) {
+                titleBtn.innerHTML = `<span class="title-name">${esc(g.name)}</span>`;
+            } else {
+                titleBtn.innerHTML = '';
             }
         }
 
         function updateDisplay() {
-            let active = projects[activeProject];
-            stitchDisplay.innerText = active.stitches;
-            rowDisplay.innerText = active.rows;
+            const a = active();
+            persist();
+            renderHeader();
 
-            localStorage.setItem("savedProjects", JSON.stringify(projects));
-            localStorage.setItem('savedActiveProject', activeProject);
+            const group = currentGroup();
+            sidebarArrow.style.display = group ? 'flex' : 'none';
+            if (group) {
+                renderSidebar();
+            } else {
+                closeSidebar();
+            }
 
-            document.getElementById('projectTitle').innerText = active.name;
-            document.getElementById('projectTitleModal').value = active.name;
-            document.getElementById('stitchesPerRowInput').value = active.stitchesPerRow;
-            document.getElementById('totalRowsInput').value = active.totalRows;
-        }
-
-        function fillDropdownList() {
-            document.getElementById('dropdownList').innerHTML = projects
-            .map((project, index) => ({ project, index })) 
-            .filter(({ index }) => index !== activeProject) 
-            .map(({ project, index }) => `<li data-index="${index}">${project.name}</li>`)
-            .join('');
+            const empty = !a;
+            counterSection.style.display = empty ? 'none' : '';
+            emptyState.style.display = empty ? 'flex' : 'none';
+            $('settingsBtn').style.display = empty ? 'none' : '';
+            $('restoreArea').style.display = empty ? 'none' : '';
+            if (empty) {
+                updateText('');
+                restoreBtn.style.display = 'none';
+            } else {
+                renderCounters(a);
+            }
         }
 
         function nextNumber() {
@@ -495,6 +1467,51 @@
             return maxNumber + 1;
         }
 
+        function nextGroupNumber() {
+            let maxNumber = 0;
+            const numberPattern = /^group\s+(\d+)$/i;
+            groups.forEach(obj => {
+                const match = obj.name.match(numberPattern);
+                if (match) {
+                    const currentNumber = parseInt(match[1], 10);
+                    if (currentNumber > maxNumber) {
+                        maxNumber = currentNumber;
+                    }
+                }
+            });
+            return maxNumber + 1;
+        }
+
+        function fillDropdownList() {
+            const items = [];
+            groups.forEach(g => items.push({name: g.name, group: g}));
+            projects.forEach((p, i) => {
+                if (i !== activeProject && !(p.groupId && groups.some(g => g.id === p.groupId))) {
+                    items.push({name: p.name, index: i});
+                }
+            });
+            items.sort(byName);
+            let html = '';
+            items.forEach(it => {
+                if (it.group) {
+                    const collapsed = collapsedGroups.has(it.group.id);
+                    html += `<li class="grp" data-group="${esc(it.group.id)}"><span class="chev" data-toggle="${esc(it.group.id)}">${collapsed ? '▸' : '▾'}</span>${esc(it.name)}</li>`;
+                    if (!collapsed) {
+                        projects
+                            .map((p, i) => ({p, i}))
+                            .filter(x => x.p.groupId === it.group.id && x.i !== activeProject)
+                            .sort((x, y) => byName(x.p, y.p))
+                            .forEach(x => {
+                                html += `<li class="child" data-index="${x.i}">${esc(x.p.name)}</li>`;
+                            });
+                    }
+                } else {
+                    html += `<li data-index="${it.index}">${esc(it.name)}</li>`;
+                }
+            });
+            dropdownList.innerHTML = html;
+        }
+
         function updateText(notificationText) {
             notification.innerText = notificationText;
         }
@@ -503,28 +1520,332 @@
             notificationModal.innerText = notificationModalText;
         }
 
+        function noteAll(text) {
+            notificationModal.innerText = text;
+            $('notificationAdv').innerText = text;
+        }
+
         function doMath() {
-            let active = projects[activeProject];
-            if (active.rows === active.totalRows) {
+            const a = active();
+            if (!a) return;
+            if (a.mode !== 'freeform' && a.rows === getTotalRows(a)) {
                 updateText("Congratulations, you've finished!"); 
             } else {
                 updateText(""); 
             }
         }
 
-        // Initialization
-        window.onload = () => {
-            projects = initializeProject();
-            activeProject = parseInt(localStorage.getItem('savedActiveProject')) || 0;
-            updateDisplay();
-        };
+        // ===== Dropdown / sidebar open-close =====
+        function openDropdown() {
+            fillDropdownList();
+            dropdown.style.display = 'flex';
+            dropdownOverlay.style.display = 'block';
+            titleBtn.classList.add('active');
+        }
 
-        // Event Listeners: Overlay blockers (Prevents click-through)
-        dropdownOverlay.addEventListener('click', (e) => {
-            e.stopPropagation();
+        function closeDropdown() {
             dropdown.style.display = 'none';
             dropdownOverlay.style.display = 'none';
             titleBtn.classList.remove('active');
+        }
+
+        function openSidebar() {
+            if (!currentGroup()) return;
+            closeDropdown();
+            renderSidebar();
+            sidebar.classList.add('open');
+            sidebarOverlay.style.display = 'block';
+            sidebarArrow.classList.add('open');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.style.display = 'none';
+            sidebarArrow.classList.remove('open');
+        }
+
+        function renderSidebar() {
+            const g = currentGroup();
+            if (!g) return;
+            const a = active();
+            $('sbGroupName').textContent = g.name;
+            const members = projects.filter(p => p.groupId === g.id).sort(byName);
+            if (a && a.showGroupSummary) {
+                const done = members.filter(isFinished).length;
+                $('sbSummary').textContent = `${done} out of ${members.length} projects finished.`;
+            } else {
+                $('sbSummary').textContent = '';
+            }
+            const showProg = a && a.showProgressInSidebar;
+            if (!members.length) {
+                $('sbList').innerHTML = '<div class="sb-empty">No projects in this group yet.</div>';
+            } else {
+                $('sbList').innerHTML = members.map(p => {
+                    const isCur = p === a;
+                    return `<li class="${isCur ? 'current' : ''}" ${isCur ? '' : `data-index="${projects.indexOf(p)}"`}><span>${esc(p.name)}</span>${showProg ? `<span class="prog">${esc(progressText(p))}</span>` : ''}</li>`;
+                }).join('');
+            }
+        }
+
+        // ===== Modal stack (only one visible at a time) =====
+        const modalStack = [];
+
+        function pushModal(el) {
+            if (modalStack.includes(el)) return;
+            const top = modalStack[modalStack.length - 1];
+            if (top) top.style.display = 'none';
+            if (el.parentNode !== document.body) document.body.appendChild(el);
+            el.style.display = 'flex';
+            modalStack.push(el);
+        }
+
+        function popModal() {
+            const el = modalStack.pop();
+            if (!el) return;
+            el.style.display = 'none';
+            if (el.dataset.dynamic) el.remove();
+            const top = modalStack[modalStack.length - 1];
+            if (top) top.style.display = 'flex';
+        }
+
+        function closeAllModals() {
+            while (modalStack.length) popModal();
+        }
+
+        function openDialog(cfg) {
+            const el = document.createElement('div');
+            el.className = 'modal';
+            el.dataset.dynamic = '1';
+            el.addEventListener('click', (e) => {
+                if (e.target === el) e.stopPropagation();
+            });
+            const box = document.createElement('div');
+            box.className = 'modal-content' + (cfg.wide ? ' wide' : '');
+            const err = document.createElement('div');
+            err.className = 'modal-note';
+            const api = {el: el, close: () => popModal(), setError: (m) => { err.textContent = m || ''; }};
+            if (cfg.title) {
+                const h = document.createElement('h2');
+                h.textContent = cfg.title;
+                box.appendChild(h);
+            }
+            if (cfg.message) {
+                const p = document.createElement('p');
+                p.className = 'dlg-msg';
+                p.textContent = cfg.message;
+                box.appendChild(p);
+            }
+            const inputs = {};
+            (cfg.fields || []).forEach(f => {
+                const lab = document.createElement('label');
+                lab.appendChild(document.createTextNode(f.label + ' '));
+                const inp = document.createElement('input');
+                inp.type = f.type || 'number';
+                if (inp.type === 'text') inp.className = 'wide-input';
+                if (f.min != null) inp.min = f.min;
+                inp.value = f.value;
+                lab.appendChild(inp);
+                if (inp.type === 'text') {
+                    lab.style.flexDirection = 'column';
+                    lab.style.alignItems = 'stretch';
+                }
+                box.appendChild(lab);
+                inputs[f.id] = inp;
+            });
+            if (cfg.buildBody) box.appendChild(cfg.buildBody(api));
+            box.appendChild(err);
+            const grp = document.createElement('div');
+            grp.className = 'button-group' + ((cfg.buttons || []).length > 2 ? ' stack' : '');
+            (cfg.buttons || []).forEach(b => {
+                const btn = document.createElement('button');
+                btn.className = b.kind === 'delete' ? 'delete-btn' : 'save-btn';
+                btn.textContent = b.label;
+                btn.addEventListener('click', () => {
+                    const vals = {};
+                    Object.keys(inputs).forEach(k => { vals[k] = inputs[k].value; });
+                    if (b.validate) {
+                        const m = b.validate(vals);
+                        if (m) { api.setError(m); return; }
+                    }
+                    popModal();
+                    if (b.onClick) b.onClick(vals);
+                });
+                grp.appendChild(btn);
+            });
+            box.appendChild(grp);
+            el.appendChild(box);
+            pushModal(el);
+            const firstInput = el.querySelector('input[type="text"]');
+            if (firstInput) { firstInput.focus(); firstInput.select(); }
+            return api;
+        }
+
+        // ===== Undo =====
+        function setUndo(label, kind, fn) {
+            pendingUndo = {kind: kind, fn: fn};
+            undoBtn.innerText = label;
+            undoBtn.style.transform = 'translateX(0px)';
+            undoBtn.style.display = 'flex';
+        }
+
+        function clearUndo() {
+            pendingUndo = null;
+            undoBtn.style.display = 'none';
+        }
+
+        // Mode-change undo restores a whole project snapshot, so it is dropped as soon as the
+        // counters change or another project is opened (it would otherwise erase that progress).
+        function dismissModeUndo() {
+            if (pendingUndo && pendingUndo.kind === 'mode') clearUndo();
+        }
+
+        function snapshot(p) {
+            return clone(p);
+        }
+
+        function restoreSnapshot(snap) {
+            const i = projects.findIndex(p => p.id === snap.id);
+            if (i < 0) return;
+            snap.groupId = projects[i].groupId;
+            projects[i] = snap;
+        }
+
+        function offerModeUndo(snap) {
+            setUndo('Undo mode change', 'mode', () => {
+                restoreSnapshot(snap);
+                restoreBtn.style.display = 'none';
+                afterProjectChanged();
+            });
+        }
+
+        undoBtn.addEventListener('click', () => {
+            if (!pendingUndo) return;
+            const u = pendingUndo;
+            clearUndo();
+            u.fn();
+            updateDisplay();
+            doMath();
+        });
+
+        // ===== Swipe-to-dismiss (shared by Restore and Undo; same mechanic as before) =====
+        function attachSwipe(btn, onDismiss) {
+            let startX = 0;
+            btn.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                btn.style.transition = 'none';
+            });
+
+            btn.addEventListener('touchmove', (e) => {
+                let currentX = e.touches[0].clientX;
+                let distance = currentX - startX;
+                btn.style.transform = `translateX(${distance}px)`;
+            });
+
+            btn.addEventListener('touchend', (e) => {
+                let endX = e.changedTouches[0].clientX;
+                let totalDistance = endX - startX;  
+                if (Math.abs(totalDistance) > window.innerWidth / 3) {
+                    btn.style.transform = `translateX(0px)`;
+                    btn.style.display = 'none';
+                    if (onDismiss) onDismiss();
+                } else {
+                    btn.style.transition = 'transform 0.3s ease-out';
+                    btn.style.transform = `translateX(0px)`;
+                }
+            });
+        }
+
+        attachSwipe(restoreBtn);
+        attachSwipe(undoBtn, () => { pendingUndo = null; });
+
+        // ===== Navigation =====
+        function switchToProject(i) {
+            activeProject = i;
+            activeGroupId = null;
+            restoreBtn.style.display = 'none';
+            dismissModeUndo();
+            closeDropdown();
+            closeSidebar();
+            updateDisplay();
+            doMath();
+        }
+
+        function goToGroup(gid) {
+            const members = projects.map((p, i) => ({p, i})).filter(x => x.p.groupId === gid).sort((x, y) => byName(x.p, y.p));
+            if (members.length) {
+                if (members[0].i === activeProject) {
+                    closeDropdown();
+                    closeSidebar();
+                } else {
+                    switchToProject(members[0].i);
+                }
+            } else {
+                activeProject = -1;
+                activeGroupId = gid;
+                restoreBtn.style.display = 'none';
+                dismissModeUndo();
+                closeDropdown();
+                closeSidebar();
+                updateDisplay();
+            }
+        }
+
+        function createProject(groupId) {
+            const np = new Project(`Project ${nextNumber()}`, 0, 0, 40, 10);
+            np.groupId = groupId || null;
+            projects.push(np);
+            activeProject = projects.length - 1;
+            activeGroupId = null;
+            restoreBtn.style.display = 'none';
+            dismissModeUndo();
+            updateDisplay();
+            doMath();
+            closeDropdown();
+            closeSidebar();
+            openSettings();
+        }
+
+        function createGroup() {
+            const g = {id: uid('g'), name: `Group ${nextGroupNumber()}`};
+            groups.push(g);
+            return g;
+        }
+
+        // ===== Initialization =====
+        window.onload = () => {
+            projects = initializeProject();
+            groups = initializeGroups();
+            projects.forEach(p => {
+                if (p.groupId && !groups.some(g => g.id === p.groupId)) p.groupId = null;
+            });
+            const idx = parseInt(localStorage.getItem('savedActiveProject'), 10);
+            const sg = localStorage.getItem('savedActiveGroup');
+            if (idx >= 0 && idx < projects.length) {
+                activeProject = idx;
+                activeGroupId = null;
+            } else if (sg && groups.some(g => g.id === sg)) {
+                activeProject = -1;
+                activeGroupId = sg;
+            } else if (projects.length) {
+                activeProject = 0;
+                activeGroupId = null;
+            } else {
+                projects = defaultProject();
+                activeProject = 0;
+                activeGroupId = null;
+            }
+            updateDisplay();
+        };
+
+        // ===== Overlay blockers (prevents click-through) =====
+        dropdownOverlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeDropdown();
+        });
+
+        sidebarOverlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeSidebar();
         });
 
         document.querySelectorAll('.modal').forEach(m => {
@@ -535,184 +1856,1063 @@
             });
         });
 
-        // Event Listeners: Dropdown
+        // ===== Dropdown =====
         titleBtn.addEventListener('click', () => {
             if (window.getComputedStyle(dropdown).display === 'none') {
+                openDropdown();
+            } else {
+                closeDropdown();
+            }
+        });
+
+        dropdownList.addEventListener('click', (event) => {
+            const chev = event.target.closest('[data-toggle]');
+            if (chev) {
+                const gid = chev.getAttribute('data-toggle');
+                if (collapsedGroups.has(gid)) collapsedGroups.delete(gid); else collapsedGroups.add(gid);
                 fillDropdownList();
-                dropdown.style.display = 'flex';
-                dropdownOverlay.style.display = 'block';
-                titleBtn.classList.add('active');
-            } else {
-                dropdown.style.display = 'none'; 
-                dropdownOverlay.style.display = 'none'; 
-                titleBtn.classList.remove('active');
+                return;
+            }
+            const li = event.target.closest('li');
+            if (!li) return;
+            if (li.dataset.group) {
+                goToGroup(li.dataset.group);
+            } else if (li.dataset.index !== undefined) {
+                switchToProject(parseInt(li.dataset.index, 10));
             }
         });
 
-        document.getElementById('dropdownList').addEventListener('click', (event) => {
-            if (event.target.tagName === 'LI') {
-                const itemKey = event.target.getAttribute('data-index');
-                activeProject = parseInt(itemKey, 10);
-                updateDisplay();
-                
-                dropdown.style.display = 'none';
-                dropdownOverlay.style.display = 'none';
-                titleBtn.classList.remove('active');
-                restoreBtn.style.display = 'none';
-            }
+        $('btnNewProject').addEventListener('click', () => {
+            createProject(null);
         });
 
-        document.getElementById('btnNewProject').addEventListener('click', () => {
-            projects.push(new Project(`Project ${nextNumber()}`, 0, 0, 1, 1));
-            activeProject = projects.length - 1;
+        $('btnNewGroup').addEventListener('click', () => {
+            const g = createGroup();
+            activeProject = -1;
+            activeGroupId = g.id;
+            restoreBtn.style.display = 'none';
+            dismissModeUndo();
+            closeDropdown();
             updateDisplay();
-            
-            dropdown.style.display = 'none';
-            dropdownOverlay.style.display = 'none';
-            titleBtn.classList.remove('active');
-            
-            modal.style.display = 'flex';
         });
 
-        // Event Listeners: Stitch Counters
-        document.getElementById('stitchPlus').addEventListener('click', () => {
-            let active = projects[activeProject];
-            if (active.rows < active.totalRows) {
-                active.stitches++;
-                if (active.stitches >= active.stitchesPerRow) {
-                    active.stitches = 0;
-                    active.rows++;
+        // ===== Sidebar =====
+        sidebarArrow.addEventListener('click', () => {
+            if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
+        });
+
+        $('sbList').addEventListener('click', (e) => {
+            const li = e.target.closest('li');
+            if (!li || li.dataset.index === undefined) return;
+            switchToProject(parseInt(li.dataset.index, 10));
+        });
+
+        $('sbGroupName').addEventListener('click', () => {
+            const g = currentGroup();
+            if (!g) return;
+            openDialog({
+                title: 'Rename group',
+                fields: [{id: 'name', label: '', type: 'text', value: g.name}],
+                buttons: [
+                    {label: 'Cancel', kind: 'delete'},
+                    {label: 'Save', validate: (v) => v.name.trim() ? '' : 'Please enter a name', onClick: (v) => {
+                        g.name = v.name.trim();
+                        updateDisplay();
+                    }}
+                ]
+            });
+        });
+
+        $('sbDeleteGroup').addEventListener('click', () => {
+            const g = currentGroup();
+            if (!g) return;
+            const n = projects.filter(p => p.groupId === g.id).length;
+            if (n > 0) {
+                openDialog({
+                    title: `Delete group "${g.name}"?`,
+                    message: `"Delete projects" permanently removes the ${n} project${n === 1 ? '' : 's'} in this group. "Ungroup projects" keeps ${n === 1 ? 'it' : 'them'} as standalone.`,
+                    buttons: [
+                        {label: 'Delete projects', kind: 'delete', onClick: () => deleteGroup(g.id, 'delete')},
+                        {label: 'Ungroup projects', onClick: () => deleteGroup(g.id, 'ungroup')},
+                        {label: 'Cancel', kind: 'delete'}
+                    ]
+                });
+            } else {
+                openDialog({
+                    title: `Delete group "${g.name}"?`,
+                    buttons: [
+                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Delete group', kind: 'delete', onClick: () => deleteGroup(g.id, 'delete')}
+                    ]
+                });
+            }
+        });
+
+        function deleteGroup(gid, how) {
+            const gIdx = groups.findIndex(g => g.id === gid);
+            if (gIdx < 0) return;
+            const g = groups[gIdx];
+            const members = projects.filter(p => p.groupId === gid);
+            const prevActive = active();
+            const prevActiveGroup = activeGroupId;
+            let createdDefault = null;
+
+            if (how === 'ungroup' && members.length) {
+                members.forEach(p => { p.groupId = null; });
+                groups.splice(gIdx, 1);
+                if (!prevActive) {
+                    activeProject = 0;
+                    activeGroupId = null;
+                }
+                setUndo('Undo group delete', 'group', () => {
+                    members.forEach(p => { p.groupId = gid; });
+                    groups.splice(Math.min(gIdx, groups.length), 0, g);
+                    activeProject = prevActive ? projects.indexOf(prevActive) : -1;
+                    activeGroupId = prevActiveGroup;
+                });
+            } else {
+                const removed = members.map(p => ({p: p, idx: projects.indexOf(p)}));
+                projects = projects.filter(p => p.groupId !== gid);
+                groups.splice(gIdx, 1);
+                if (!projects.length) {
+                    projects = defaultProject();
+                    createdDefault = projects[0];
+                }
+                const first = projects.slice().sort(byName)[0];
+                activeProject = projects.indexOf(first);
+                activeGroupId = null;
+                setUndo('Undo group delete', 'group', () => {
+                    if (createdDefault) projects = projects.filter(p => p !== createdDefault);
+                    removed.slice().sort((x, y) => x.idx - y.idx).forEach(r => {
+                        projects.splice(Math.min(r.idx, projects.length), 0, r.p);
+                    });
+                    groups.splice(Math.min(gIdx, groups.length), 0, g);
+                    activeProject = prevActive ? projects.indexOf(prevActive) : -1;
+                    activeGroupId = prevActiveGroup;
+                });
+            }
+            restoreBtn.style.display = 'none';
+            closeSidebar();
+            updateDisplay();
+            doMath();
+        }
+
+        // ===== Empty group state =====
+        $('emptyNewProject').addEventListener('click', () => {
+            createProject(activeGroupId);
+        });
+
+        $('emptyAddExisting').addEventListener('click', () => {
+            const gid = activeGroupId;
+            if (!gid) return;
+            const free = projects.map((p, i) => ({p, i})).filter(x => !x.p.groupId).sort((x, y) => byName(x.p, y.p));
+            let listEl = null;
+            openDialog({
+                title: 'Add existing project',
+                message: free.length ? '' : 'There are no ungrouped projects to add.',
+                buildBody: () => {
+                    listEl = document.createElement('div');
+                    listEl.className = 'pick-list';
+                    listEl.innerHTML = free.map(x => `<label class="check"><input type="checkbox" value="${x.i}"> <span>${esc(x.p.name)}</span></label>`).join('');
+                    return listEl;
+                },
+                buttons: free.length ? [
+                    {label: 'Cancel', kind: 'delete'},
+                    {label: 'Add', 
+                     validate: () => listEl.querySelector('input:checked') ? '' : 'Select at least one project',
+                     onClick: () => {
+                        const picked = [...listEl.querySelectorAll('input:checked')].map(i => projects[parseInt(i.value, 10)]);
+                        picked.forEach(p => { p.groupId = gid; });
+                        picked.sort(byName);
+                        switchToProject(projects.indexOf(picked[0]));
+                     }}
+                ] : [{label: 'Close', kind: 'delete'}]
+            });
+        });
+
+        // ===== Counters =====
+        function confirmOverflow(target, current, onContinue) {
+            openDialog({
+                message: `This row's target is ${target} stitches, but you currently have ${current}. Continuing will reduce your stitches to ${target - 1}. Continue, or cancel?`,
+                buttons: [
+                    {label: 'Cancel', kind: 'delete'},
+                    {label: 'Continue', onClick: onContinue}
+                ]
+            });
+        }
+
+        $('stitchPlus').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            dismissModeUndo();
+            if (isLocked(a)) { updateText(MSG.locked); return; }
+            if (a.mode === 'freeform') {
+                a.stitches++;
+                updateDisplay();
+                updateText("");
+                return;
+            }
+            if (a.rows < getTotalRows(a)) {
+                a.stitches++;
+                if (a.stitches >= targetFor(a, a.rows)) {
+                    a.stitches = 0;
+                    a.rows++;
                 }
                 updateDisplay();
                 doMath();
             } else {
-                updateText("Please change total rows goal if you wish to continue →"); 
+                updateText(MSG.finished); 
             }
         });
 
-        document.getElementById('stitchMinus').addEventListener('click', () => {
-            let active = projects[activeProject];
-            if (active.stitches === 0) {
-                if (active.rows > 0) {
-                    active.rows--;
-                    active.stitches = active.stitchesPerRow - 1;
+        $('stitchMinus').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            dismissModeUndo();
+            if (isLocked(a)) { updateText(MSG.locked); return; }
+            if (a.stitches === 0) {
+                if (a.rows > 0) {
+                    a.rows--;
+                    if (a.mode === 'freeform') {
+                        a.stitches = loggedStitches(a, a.rows);
+                    } else {
+                        a.stitches = targetFor(a, a.rows) - 1;
+                    }
                 }
             } else {
-                active.stitches--;
+                a.stitches--;
             }
             updateDisplay();
             updateText("");
         });
 
-        // Event Listeners: Row Counters
-        document.getElementById('rowPlus').addEventListener('click', () => {
-            let active = projects[activeProject];
-            if (active.rows < active.totalRows) {
-                active.rows++;
+        $('rowPlus').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            dismissModeUndo();
+            if (isLocked(a)) { updateText(MSG.locked); return; }
+            if (a.mode === 'freeform') {
+                if (a.stitches <= 0) { updateText(MSG.needStitch); return; }
+                setLog(a, a.rows, a.stitches);
+                a.rows++;
+                a.stitches = 0;
+                updateDisplay();
+                updateText("");
+                return;
+            }
+            const total = getTotalRows(a);
+            if (a.rows >= total) {
+                updateText(MSG.finished);
+                return;
+            }
+            const newRows = a.rows + 1;
+            if (newRows === total) {
+                storedStitches = a.stitches;
+                a.rows = newRows;
+                a.stitches = 0;
+                updateDisplay();
                 doMath();
-                if (active.rows === active.totalRows) {
-                    storedStitches = active.stitches;
-                    active.stitches = 0;
-                    updateDisplay();
-                    restoreBtn.style.display = 'flex';
-                } else { 
-                    updateDisplay(); 
+                restoreBtn.style.display = 'flex';
+                return;
+            }
+            const keep = a.rowAdvanceBehavior === 'keep';
+            if (keep && a.mode === 'pattern') {
+                const t = targetFor(a, newRows);
+                if (a.stitches >= t) {
+                    confirmOverflow(t, a.stitches, () => {
+                        a.rows = newRows;
+                        a.stitches = t - 1;
+                        updateDisplay();
+                        updateText("");
+                    });
+                    return;
                 }
-            } else {
-                updateText("Please change total rows goal if you wish to continue →");
-            }               
+            }
+            a.rows = newRows;
+            if (!keep) a.stitches = 0;
+            updateDisplay();
+            doMath();
         });
 
-        document.getElementById('rowMinus').addEventListener('click', () => {
-            let active = projects[activeProject];
-            if (active.rows > 0) {
-                active.rows--;
+        $('rowMinus').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            dismissModeUndo();
+            if (isLocked(a)) { updateText(MSG.locked); return; }
+            if (a.mode === 'freeform') {
+                if (a.rows > 0) {
+                    a.rows--;
+                    a.stitches = loggedStitches(a, a.rows);
+                }
+                updateDisplay();
+                updateText("");
+                return;
+            }
+            if (a.rows > 0) {
+                const newRows = a.rows - 1;
+                const keep = a.rowAdvanceBehavior === 'keep';
+                if (keep && a.mode === 'pattern') {
+                    const t = targetFor(a, newRows);
+                    if (a.stitches >= t) {
+                        confirmOverflow(t, a.stitches, () => {
+                            a.rows = newRows;
+                            a.stitches = t - 1;
+                            updateDisplay();
+                            updateText("");
+                        });
+                        return;
+                    }
+                }
+                a.rows = newRows;
+                if (!keep) a.stitches = 0;
             }
             updateDisplay();
             updateText("");
         });
 
-        // Event Listeners: Restore Swipes
-        document.getElementById('restoreBtn').addEventListener('click', () => {
-            let active = projects[activeProject];
-            active.stitches = storedStitches;
-            active.rows = active.totalRows - 1;
+        // ===== Restore stitch count =====
+        restoreBtn.addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            a.stitches = storedStitches;
+            a.rows = getTotalRows(a) - 1;
             updateDisplay();
             doMath();
             restoreBtn.style.display = 'none';
         });
 
-        restoreBtn.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            restoreBtn.style.transition = 'none';
-        });
+        // ===== Settings (main) =====
+        function pickSettings(p) {
+            return {
+                rowAdvanceBehavior: p.rowAdvanceBehavior,
+                stitchDisplay: p.stitchDisplay,
+                rowDisplay: p.rowDisplay,
+                showProgressInSidebar: p.showProgressInSidebar,
+                showGroupSummary: p.showGroupSummary
+            };
+        }
 
-        restoreBtn.addEventListener('touchmove', (e) => {
-            let currentX = e.touches[0].clientX;
-            let distance = currentX - startX;
-            restoreBtn.style.transform = `translateX(${distance}px)`;
-        });
+        function syncSimpleInputs() {
+            const a = active();
+            if (!a || a.mode !== 'simple') return;
+            $('stitchesPerRowInput').value = a.stitchesPerRow;
+            $('totalRowsInput').value = a.totalRows;
+        }
 
-        restoreBtn.addEventListener('touchend', (e) => {
-            let endX = e.changedTouches[0].clientX;
-            let totalDistance = endX - startX;  
-            if (Math.abs(totalDistance) > window.innerWidth / 3) {
-                restoreBtn.style.transform = `translateX(0px)`;
-                restoreBtn.style.display = 'none';
+        function updateSettingsView() {
+            const a = active();
+            if (!a) return;
+            const g = a.groupId ? groups.find(x => x.id === a.groupId) : null;
+            $('groupFieldVal').textContent = g ? g.name : 'No group';
+            $('simpleFields').style.display = a.mode === 'simple' ? 'flex' : 'none';
+            $('patternFields').style.display = a.mode === 'pattern' ? 'flex' : 'none';
+            $('freeformFields').style.display = a.mode === 'freeform' ? 'flex' : 'none';
+            $('markCompletedBtn').textContent = a.completed ? 'Unmark completed' : 'Mark as completed';
+            if (a.mode === 'pattern') {
+                const arr = expandPills(a.pattern);
+                const mn = Math.min(...arr), mx = Math.max(...arr);
+                $('patternSummary').textContent = `${arr.length} row${arr.length === 1 ? '' : 's'}, ${mn === mx ? mn : mn + '–' + mx} stitches.`;
             } else {
-                restoreBtn.style.transition = 'transform 0.3s ease-out';
-                restoreBtn.style.transform = `translateX(0px)`;
+                $('patternSummary').textContent = '';
             }
+        }
+
+        function populateSettings() {
+            const a = active();
+            if (!a) return;
+            $('projectTitleModal').value = a.name;
+            syncSimpleInputs();
+            settingsPending = pickSettings(a);
+            updateTextModal('');
+            updateSettingsView();
+        }
+
+        function openSettings() {
+            if (!active()) return;
+            populateSettings();
+            pushModal(modal);
+        }
+
+        // Called whenever the active project is changed by something other than the counters
+        function afterProjectChanged() {
+            updateDisplay();
+            syncSimpleInputs();
+            updateSettingsView();
+            renderAdvanced();
+        }
+
+        $('settingsBtn').addEventListener('click', () => {
+            openSettings();
         });
         
-        // Event Listeners: Settings Modals
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-        
-        document.getElementById('projectTitleModal').addEventListener('change', function(event) {
-            projects[activeProject].name = event.target.value;
+        $('projectTitleModal').addEventListener('change', function(event) {
+            const a = active();
+            if (!a) return;
+            a.name = event.target.value.trim() || a.name;
+            event.target.value = a.name;
             updateDisplay();
         });
-        
-        document.getElementById('deleteProjectBtn').addEventListener('click', () => {
-            document.getElementById('confirmModal').style.display = 'flex';
+
+        // Group picker
+        $('groupField').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            const sorted = groups.slice().sort(byName);
+            openDialog({
+                title: 'Group',
+                buildBody: (api) => {
+                    const list = document.createElement('div');
+                    list.className = 'pick-list';
+                    list.innerHTML = `<div class="opt" data-g="">No group</div>` +
+                        sorted.map(g => `<div class="opt" data-g="${esc(g.id)}">${esc(g.name)}</div>`).join('') +
+                        `<div class="opt" data-g="__new">+ New group…</div>`;
+                    list.addEventListener('click', (e) => {
+                        const opt = e.target.closest('.opt');
+                        if (!opt) return;
+                        const v = opt.dataset.g;
+                        api.close();
+                        if (v === '__new') {
+                            a.groupId = createGroup().id;
+                        } else {
+                            a.groupId = v || null;
+                        }
+                        updateDisplay();
+                        updateSettingsView();
+                    });
+                    return list;
+                },
+                buttons: [{label: 'Cancel', kind: 'delete'}]
+            });
         });
 
-        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-            document.getElementById('confirmModal').style.display = 'none';
-        });
-        
-        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-            projects.splice(activeProject, 1);
-            if (projects.length < 1) {
-                projects = defaultProject(); 
-            }
-            activeProject = 0;
-            updateDisplay();
-            document.getElementById('confirmModal').style.display = 'none';
-            modal.style.display = 'none';
-            fillDropdownList();
-            document.getElementById('dropdown').style.display = 'flex';
-        });
-
-        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-            let active = projects[activeProject];
-            const inputTotalRows = parseInt(document.getElementById('totalRowsInput').value) || 1;
-            
-            if (active.rows > inputTotalRows || (active.rows === inputTotalRows && active.stitches > 0)) {
-                updateTextModal("You've already finished more rows than the goal"); 
-            } else {
-                active.totalRows = inputTotalRows;
-                active.stitchesPerRow = parseInt(document.getElementById('stitchesPerRowInput').value) || 1;
-                modal.style.display = 'none';
+        $('openPatternEditorBtn').addEventListener('click', () => {
+            const a = active();
+            if (!a || a.mode !== 'pattern') return;
+            openPatternEditor(a.pattern, (pills) => {
+                const err = patternFitError(a, pills);
+                if (err) return err;
+                a.pattern = pills;
+                reconcile(a);
                 updateDisplay();
-                updateTextModal("");
+                updateSettingsView();
                 doMath();
-            }
+            });
         });
 
-        // Event Listeners: Service Worker
+        $('markCompletedBtn').addEventListener('click', () => {
+            const a = active();
+            if (!a || a.mode !== 'freeform') return;
+            if (a.completed) {
+                a.completed = false;
+                updateText('');
+                afterProjectChanged();
+                return;
+            }
+            a.completed = true;
+            updateText('');
+            afterProjectChanged();
+            if (!freeformCounts(a, true).length) {
+                noteAll(MSG.nothing);
+                return;
+            }
+            openDialog({
+                title: 'Do you want to export this as a pattern project?',
+                buttons: [
+                    {label: 'No', kind: 'delete'},
+                    {label: 'Yes', onClick: () => exportPattern(true)}
+                ]
+            });
+        });
+
+        $('deleteProjectBtn').addEventListener('click', () => {
+            pushModal($('confirmModal'));
+        });
+
+        $('cancelDeleteBtn').addEventListener('click', () => {
+            popModal();
+        });
+        
+        $('confirmDeleteBtn').addEventListener('click', () => {
+            closeAllModals();
+            deleteActiveProject();
+        });
+
+        function deleteActiveProject() {
+            const idx = activeProject;
+            const proj = projects[idx];
+            if (!proj) return;
+            projects.splice(idx, 1);
+            let createdDefault = null;
+            const grp = proj.groupId ? groups.find(g => g.id === proj.groupId) : null;
+            if (grp) {
+                const rest = projects.filter(p => p.groupId === grp.id).sort(byName);
+                if (rest.length) {
+                    activeProject = projects.indexOf(rest[0]);
+                    activeGroupId = null;
+                } else {
+                    activeProject = -1;
+                    activeGroupId = grp.id;
+                }
+            } else {
+                if (projects.length < 1) {
+                    projects = defaultProject();
+                    createdDefault = projects[0];
+                }
+                activeProject = 0;
+                activeGroupId = null;
+            }
+            setUndo('Undo delete project', 'delete', () => {
+                if (createdDefault) projects = projects.filter(p => p !== createdDefault);
+                if (proj.groupId && !groups.some(g => g.id === proj.groupId)) proj.groupId = null;
+                projects.splice(Math.min(idx, projects.length), 0, proj);
+                activeProject = projects.indexOf(proj);
+                activeGroupId = null;
+            });
+            restoreBtn.style.display = 'none';
+            updateDisplay();
+            doMath();
+            openDropdown();
+        }
+
+        $('saveSettingsBtn').addEventListener('click', () => {
+            const a = active();
+            if (!a) return;
+            if (a.mode === 'simple') {
+                const inputTotalRows = parseInt($('totalRowsInput').value) || 1;
+                if (a.rows > inputTotalRows || (a.rows === inputTotalRows && a.stitches > 0)) {
+                    updateTextModal(MSG.tooManyRows); 
+                    return;
+                }
+                a.totalRows = inputTotalRows;
+                a.stitchesPerRow = parseInt($('stitchesPerRowInput').value) || 1;
+                if (a.rows < a.totalRows && a.stitches >= a.stitchesPerRow) a.stitches = a.stitchesPerRow - 1;
+            }
+            if (settingsPending) Object.assign(a, settingsPending);
+            closeAllModals();
+            updateDisplay();
+            updateTextModal("");
+            doMath();
+        });
+
+        // ===== Advanced settings =====
+        function renderAdvanced() {
+            const a = active();
+            if (!a || !advDraft) return;
+            advancedModal.querySelectorAll('.seg').forEach(seg => {
+                const key = seg.dataset.key;
+                const cur = key === 'mode' ? a.mode : advDraft[key];
+                seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === cur));
+            });
+            advancedModal.querySelectorAll('[data-notfree]').forEach(el => {
+                el.style.display = a.mode === 'freeform' ? 'none' : 'flex';
+            });
+            advancedModal.querySelectorAll('[data-free]').forEach(el => {
+                el.style.display = a.mode === 'freeform' ? 'flex' : 'none';
+            });
+            $('advShowProgress').checked = advDraft.showProgressInSidebar;
+            $('advShowSummary').checked = advDraft.showGroupSummary;
+        }
+
+        $('advancedBtn').addEventListener('click', () => {
+            if (!active() || !settingsPending) return;
+            advDraft = clone(settingsPending);
+            $('notificationAdv').innerText = '';
+            renderAdvanced();
+            pushModal(advancedModal);
+        });
+
+        advancedModal.addEventListener('click', (e) => {
+            const b = e.target.closest('.seg button');
+            if (!b) return;
+            const key = b.parentElement.dataset.key;
+            const v = b.dataset.v;
+            if (key === 'mode') {
+                startModeChange(v);
+                return;
+            }
+            advDraft[key] = v;
+            renderAdvanced();
+        });
+
+        $('advShowProgress').addEventListener('change', (e) => { advDraft.showProgressInSidebar = e.target.checked; });
+        $('advShowSummary').addEventListener('change', (e) => { advDraft.showGroupSummary = e.target.checked; });
+
+        $('advSaveBtn').addEventListener('click', () => {
+            settingsPending = clone(advDraft);
+            popModal();
+        });
+
+        $('advBackBtn').addEventListener('click', () => {
+            if (JSON.stringify(advDraft) === JSON.stringify(settingsPending)) {
+                popModal();
+                return;
+            }
+            openDialog({
+                title: 'Save changes?',
+                buttons: [
+                    {label: 'Save', onClick: () => {
+                        settingsPending = clone(advDraft);
+                        popModal();
+                    }},
+                    {label: "Don't save", kind: 'delete', onClick: () => popModal()},
+                    {label: 'Cancel', kind: 'delete'}
+                ]
+            });
+        });
+
+        $('viewPatternBtn').addEventListener('click', () => {
+            const a = active();
+            if (!a || a.mode !== 'freeform') return;
+            const counts = freeformCounts(a, false);
+            const inProgress = a.stitches > 0 ? {row: a.rows + 1, stitches: a.stitches} : null;
+            let html = '';
+            let note = '';
+            if (!counts.length && !inProgress && a.referencePattern && validPattern(a.referencePattern)) {
+                note = 'Reference pattern (from before switching to Freeform)';
+                html = a.referencePattern.map(p => pillHtml(p)).join('');
+            } else if (!counts.length && !inProgress) {
+                note = 'Nothing logged yet.';
+            } else {
+                html = countsToPills(counts).map(p => pillHtml(p)).join('');
+                if (inProgress) {
+                    html += `<div class="pill progress"><b>Row ${inProgress.row} — in progress</b><span>${inProgress.stitches}</span></div>`;
+                }
+            }
+            openDialog({
+                wide: true,
+                title: 'Pattern so far',
+                message: note,
+                buildBody: () => {
+                    const d = document.createElement('div');
+                    d.className = 'view-pills';
+                    d.innerHTML = html;
+                    return d;
+                },
+                buttons: [{label: 'Close', kind: 'delete'}]
+            });
+        });
+
+        function pillHtml(p) {
+            const range = p.start === p.end ? `Row ${p.start}` : `Rows ${p.start}–${p.end}`;
+            return `<div class="pill"><b>${range}</b><span>${p.stitches}</span></div>`;
+        }
+
+        $('exportPatternBtn').addEventListener('click', () => {
+            exportPattern(false);
+        });
+
+        function exportPattern(fromCompletion) {
+            const a = active();
+            if (!a || a.mode !== 'freeform') return;
+            const counts = freeformCounts(a, true);
+            if (!counts.length) {
+                noteAll(MSG.nothing);
+                return;
+            }
+            const np = new Project(`${a.name} Pattern`, 0, 0, 40, 10);
+            np.mode = 'pattern';
+            np.pattern = countsToPills(counts);
+            np.stitchesPerRow = null;
+            np.totalRows = null;
+            np.groupId = null;
+            projects.push(np);
+            closeAllModals();
+            switchToProject(projects.length - 1);
+            if (fromCompletion) openSettings();
+        }
+
+        // ===== Mode transitions =====
+        function convertToPattern(a, pills) {
+            a.mode = 'pattern';
+            a.pattern = pills;
+            a.stitchesPerRow = null;
+            a.totalRows = null;
+            a.log = [];
+            a.completed = false;
+            a.referencePattern = null;
+            reconcile(a);
+        }
+
+        function convertToFreeform(a) {
+            let log = [];
+            let ref = null;
+            if (a.mode === 'pattern') {
+                const arr = expandPills(a.pattern);
+                ref = clone(a.pattern);
+                for (let i = 0; i < a.rows && i < arr.length; i++) log.push({row: i, stitches: arr[i]});
+            }
+            a.mode = 'freeform';
+            a.log = log;
+            a.referencePattern = ref;
+            a.completed = false;
+            a.pattern = null;
+            a.stitchesPerRow = null;
+            a.totalRows = null;
+        }
+
+        function convertToSimple(a, spr, total) {
+            a.mode = 'simple';
+            a.stitchesPerRow = spr;
+            a.totalRows = total;
+            a.pattern = null;
+            a.log = [];
+            a.completed = false;
+            a.referencePattern = null;
+            if (a.rows < total && a.stitches >= spr) a.stitches = spr - 1;
+        }
+
+        function finishModeChange(snap) {
+            restoreBtn.style.display = 'none';
+            updateText('');
+            afterProjectChanged();
+            doMath();
+            if (snap) offerModeUndo(snap);
+        }
+
+        function positiveInt(v) {
+            return /^\d+$/.test(String(v).trim()) && parseInt(v, 10) >= 1;
+        }
+
+        function startModeChange(newMode) {
+            const a = active();
+            if (!a || a.mode === newMode) return;
+            const key = a.mode + '>' + newMode;
+
+            if (key === 'simple>pattern') {
+                openPatternEditor([{start: 1, end: Math.max(1, a.totalRows), stitches: Math.max(1, a.stitchesPerRow)}], (pills) => {
+                    const err = patternFitError(a, pills);
+                    if (err) return err;
+                    convertToPattern(a, pills);
+                    finishModeChange(null);   // no undo: no data is lost
+                });
+                return;
+            }
+
+            if (key === 'simple>freeform') {
+                openDialog({
+                    message: `Remove the stitches-per-row and total-rows goal? Your current progress (${a.rows} rows, ${a.stitches} stitches) will be kept.`,
+                    buttons: [
+                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Yes', onClick: () => {
+                            const snap = snapshot(a);
+                            convertToFreeform(a);
+                            finishModeChange(snap);
+                        }}
+                    ]
+                });
+                return;
+            }
+
+            if (key === 'pattern>simple') {
+                openDialog({
+                    title: 'Switch to Simple',
+                    message: 'How many stitches are in each row?',
+                    fields: [{id: 'spr', label: 'Stitches per row:', value: targetFor(a, a.rows), min: 1}],
+                    buttons: [
+                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Switch',
+                         validate: (v) => positiveInt(v.spr) ? '' : 'Enter a stitch count of at least 1',
+                         onClick: (v) => {
+                            const snap = snapshot(a);
+                            convertToSimple(a, parseInt(v.spr, 10), patternLength(a.pattern));
+                            finishModeChange(snap);
+                         }}
+                    ]
+                });
+                return;
+            }
+
+            if (key === 'pattern>freeform') {
+                openDialog({
+                    message: 'Switch to Freeform? Your pattern will be kept as reference but will no longer drive the counter.',
+                    buttons: [
+                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Yes', onClick: () => {
+                            const snap = snapshot(a);
+                            convertToFreeform(a);
+                            finishModeChange(snap);
+                        }}
+                    ]
+                });
+                return;
+            }
+
+            if (key === 'freeform>simple') {
+                const guess = a.stitches || (a.log.length ? a.log[a.log.length - 1].stitches : 40);
+                openDialog({
+                    title: 'Switch to Simple',
+                    fields: [
+                        {id: 'spr', label: 'Stitches per row:', value: guess, min: 1},
+                        {id: 'total', label: 'Total rows goal:', value: Math.max(10, a.rows + 1), min: 1}
+                    ],
+                    buttons: [
+                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Switch',
+                         validate: (v) => {
+                            if (!positiveInt(v.spr) || !positiveInt(v.total)) return 'Enter whole numbers of at least 1';
+                            const total = parseInt(v.total, 10);
+                            if (a.rows > total || (a.rows === total && a.stitches > 0)) return MSG.tooManyRows;
+                            return '';
+                         },
+                         onClick: (v) => {
+                            const snap = snapshot(a);
+                            convertToSimple(a, parseInt(v.spr, 10), parseInt(v.total, 10));
+                            finishModeChange(snap);
+                         }}
+                    ]
+                });
+                return;
+            }
+
+            if (key === 'freeform>pattern') {
+                const counts = freeformCounts(a, true);
+                const initial = counts.length ? countsToPills(counts) : [{start: 1, end: 10, stitches: 40}];
+                openPatternEditor(initial, (pills) => {
+                    const err = patternFitError(a, pills);
+                    if (err) return err;
+                    const snap = snapshot(a);
+                    convertToPattern(a, pills);
+                    finishModeChange(snap);
+                });
+                return;
+            }
+        }
+
+        // ===== Pattern editor =====
+        function openPatternEditor(pills, onSave) {
+            ed = {blocks: pillsToBlocks(pills), tab: 'pills', onSave: onSave};
+            $('patternNote').textContent = '';
+            renderEditor();
+            pushModal(patternEditorModal);
+        }
+
+        function renderEditor() {
+            $('peTabText').classList.toggle('on', ed.tab === 'text');
+            $('peTabPills').classList.toggle('on', ed.tab === 'pills');
+            $('peText').style.display = ed.tab === 'text' ? 'block' : 'none';
+            $('pePills').style.display = ed.tab === 'pills' ? 'block' : 'none';
+            if (ed.tab === 'pills') renderPillList();
+        }
+
+        function renderPillList() {
+            let r = 1;
+            const only = ed.blocks.length <= 1;
+            pillList.innerHTML = ed.blocks.map((b, i) => {
+                const s = r, e = r + b.len - 1;
+                r = e + 1;
+                return `<div class="pill-row" data-i="${i}">
+                    <div class="grip" aria-label="Hold to drag"><svg viewBox="0 0 12 18" width="14" height="20" fill="currentColor"><circle cx="3" cy="3" r="1.6"/><circle cx="9" cy="3" r="1.6"/><circle cx="3" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="3" cy="15" r="1.6"/><circle cx="9" cy="15" r="1.6"/></svg></div>
+                    <div class="pill-range">${s === e ? s : s + '–' + e}</div>
+                    <input type="number" class="pill-len" min="1" inputmode="numeric" value="${b.len}" data-i="${i}" aria-label="Number of rows">
+                    <input type="number" class="pill-st" min="1" inputmode="numeric" value="${b.stitches}" data-i="${i}" aria-label="Stitches">
+                    <button class="pill-del" data-i="${i}" ${only ? 'disabled' : ''} aria-label="Remove">×</button>
+                </div>`;
+            }).join('');
+        }
+
+        function editorNote(msg) {
+            $('patternNote').textContent = msg || '';
+        }
+
+        function editorTotalRows() {
+            return ed.blocks.reduce((s, b) => s + b.len, 0);
+        }
+
+        pillList.addEventListener('change', (e) => {
+            const t = e.target;
+            if (!t.dataset || t.dataset.i === undefined) return;
+            const i = parseInt(t.dataset.i, 10);
+            const b = ed.blocks[i];
+            if (!b) return;
+            let rowNo = 1;
+            for (let k = 0; k < i; k++) rowNo += ed.blocks[k].len;
+            const v = String(t.value).trim();
+            if (t.classList.contains('pill-st')) {
+                if (!/^\d+$/.test(v) || parseInt(v, 10) < 1) {
+                    editorNote(`Row ${rowNo} has invalid stitch count`);
+                } else {
+                    b.stitches = parseInt(v, 10);
+                    editorNote('');
+                }
+            } else if (t.classList.contains('pill-len')) {
+                const n = parseInt(v, 10);
+                if (!/^\d+$/.test(v) || n < 1) {
+                    editorNote(`Row ${rowNo}: a pill needs at least 1 row`);
+                } else if (editorTotalRows() - b.len + n > MAX_ROWS) {
+                    editorNote(`A pattern can have at most ${MAX_ROWS} rows`);
+                } else {
+                    b.len = n;
+                    editorNote('');
+                }
+            }
+            renderPillList();
+        });
+
+        pillList.addEventListener('click', (e) => {
+            const del = e.target.closest('.pill-del');
+            if (!del || del.disabled) return;
+            if (ed.blocks.length <= 1) return;
+            ed.blocks.splice(parseInt(del.dataset.i, 10), 1);
+            editorNote('');
+            renderPillList();
+        });
+
+        $('addPillBtn').addEventListener('click', () => {
+            if (editorTotalRows() + 1 > MAX_ROWS) { editorNote(`A pattern can have at most ${MAX_ROWS} rows`); return; }
+            const last = ed.blocks[ed.blocks.length - 1];
+            ed.blocks.push({len: 1, stitches: last ? last.stitches : 40});
+            editorNote('');
+            renderPillList();
+            pillList.scrollTop = pillList.scrollHeight;
+        });
+
+        $('peTabText').addEventListener('click', () => {
+            if (ed.tab === 'text') return;
+            if (!ed.blocks.length) { editorNote('Pattern must have at least 1 row'); return; }
+            $('peTextarea').value = pillsToText(blocksToPills(ed.blocks));
+            ed.tab = 'text';
+            editorNote('');
+            renderEditor();
+        });
+
+        $('peTabPills').addEventListener('click', () => {
+            if (ed.tab === 'pills') return;
+            const res = parsePatternText($('peTextarea').value);
+            if (res.error) { editorNote(res.error); return; }
+            ed.blocks = pillsToBlocks(res.pills);
+            ed.tab = 'pills';
+            editorNote('');
+            renderEditor();
+        });
+
+        $('peCancel').addEventListener('click', () => {
+            ed = null;
+            popModal();
+        });
+
+        $('peSave').addEventListener('click', () => {
+            let pills;
+            if (ed.tab === 'text') {
+                const res = parsePatternText($('peTextarea').value);
+                if (res.error) { editorNote(res.error); return; }
+                pills = res.pills;
+            } else {
+                if (!ed.blocks.length) { editorNote('Pattern must have at least 1 row'); return; }
+                pills = blocksToPills(ed.blocks);
+            }
+            if (!validPattern(pills)) { editorNote('Pattern must have at least 1 row'); return; }
+            const err = ed.onSave(pills);
+            if (err) { editorNote(err); return; }
+            ed = null;
+            popModal();
+        });
+
+        // Drag to reorder: long-press (300ms) on the grip handle
+        (function initPillDrag() {
+            let st = null;
+
+            function startDrag() {
+                if (!st) return;
+                st.active = true;
+                const items = [...pillList.querySelectorAll('.pill-row')];
+                st.items = items;
+                st.pitch = items.length > 1 ? items[1].offsetTop - items[0].offsetTop : st.row.offsetHeight;
+                st.h = st.row.offsetHeight;
+                st.top0 = st.row.offsetTop;
+                st.firstTop = items[0].offsetTop;
+                const lr = pillList.getBoundingClientRect();
+                st.grab = (st.sy - lr.top + pillList.scrollTop) - st.top0;
+                st.row.classList.add('dragging');
+                items.forEach(it => { if (it !== st.row) it.style.transition = 'transform 0.15s'; });
+                if (navigator.vibrate) { try { navigator.vibrate(15); } catch (_) {} }
+                tick();
+            }
+
+            function updateDrag() {
+                const lr = pillList.getBoundingClientRect();
+                const y = st.lastY - lr.top + pillList.scrollTop;
+                const visualTop = y - st.grab;
+                st.row.style.transform = `translateY(${visualTop - st.top0}px) scale(1.03)`;
+                const n = st.items.length;
+                let t = Math.round((visualTop - st.firstTop) / st.pitch);
+                t = Math.max(0, Math.min(n - 1, t));
+                st.target = t;
+                const s = st.idx;
+                st.items.forEach((it, j) => {
+                    if (j === s) return;
+                    let ni = j;
+                    if (j < s && j >= t) ni = j + 1;
+                    else if (j > s && j <= t) ni = j - 1;
+                    it.style.transform = ni === j ? '' : `translateY(${(ni - j) * st.pitch}px)`;
+                });
+            }
+
+            function tick() {
+                if (!st || !st.active) return;
+                const lr = pillList.getBoundingClientRect();
+                if (st.lastY < lr.top + 30) pillList.scrollTop -= 8;
+                else if (st.lastY > lr.bottom - 30) pillList.scrollTop += 8;
+                updateDrag();
+                st.raf = requestAnimationFrame(tick);
+            }
+
+            function end(commit) {
+                if (!st) return;
+                clearTimeout(st.timer);
+                cancelAnimationFrame(st.raf);
+                const wasActive = st.active;
+                const s = st.idx, t = st.target;
+                try { st.grip.releasePointerCapture(st.pointerId); } catch (_) {}
+                st = null;
+                if (wasActive) {
+                    if (commit && t !== s) {
+                        const moved = ed.blocks.splice(s, 1)[0];
+                        ed.blocks.splice(t, 0, moved);
+                    }
+                    renderPillList();
+                }
+            }
+
+            pillList.addEventListener('pointerdown', (e) => {
+                const grip = e.target.closest('.grip');
+                if (!grip || st) return;
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                const row = grip.closest('.pill-row');
+                st = {
+                    grip: grip, row: row, idx: parseInt(row.dataset.i, 10), target: parseInt(row.dataset.i, 10),
+                    pointerId: e.pointerId, sx: e.clientX, sy: e.clientY, lastY: e.clientY, active: false
+                };
+                try { grip.setPointerCapture(e.pointerId); } catch (_) {}
+                st.timer = setTimeout(startDrag, 300);
+            });
+
+            pillList.addEventListener('pointermove', (e) => {
+                if (!st || e.pointerId !== st.pointerId) return;
+                if (!st.active) {
+                    if (Math.hypot(e.clientX - st.sx, e.clientY - st.sy) > 8) end(false);
+                    return;
+                }
+                e.preventDefault();
+                st.lastY = e.clientY;
+                updateDrag();
+            });
+
+            pillList.addEventListener('pointerup', (e) => {
+                if (!st || e.pointerId !== st.pointerId) return;
+                end(true);
+            });
+
+            pillList.addEventListener('pointercancel', (e) => {
+                if (!st || e.pointerId !== st.pointerId) return;
+                end(false);
+            });
+
+            pillList.addEventListener('contextmenu', (e) => {
+                if (e.target.closest('.grip')) e.preventDefault();
+            });
+        })();
+
+        // ===== Service Worker =====
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(() => console.log('Service Worker Registered'));
