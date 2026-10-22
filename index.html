@@ -130,7 +130,6 @@
             border-radius: 8px;
             font-size: 1.2rem;
             transition: background-color 0.2s;
-            min-height: 20px;
         }
 
         .list li:active {
@@ -168,7 +167,6 @@
             color: white;
             border: none;
             padding: 12px;
-            min-height: 44px;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
@@ -211,7 +209,6 @@
             color: white;
             border: none;
             padding: 12px;
-            min-height: 52px;
             font-size: 1.2rem;
             font-family: inherit;
             border-radius: 25px;
@@ -276,8 +273,6 @@
             color: white;
             border: none;
             padding: 10px 20px;
-            min-height: 44px;
-            align-items: center;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
@@ -420,10 +415,12 @@
             text-align: left;
             color: var(--main-green);
             padding: 8px 4px;
-            min-height: 44px;
-            cursor: pointer;
+            width: 100%;
+            cursor: text;
             border-bottom: 1px dashed rgba(90, 128, 103, 0.5);
             word-break: break-word;
+            user-select: text;
+            -webkit-user-select: text;
         }
 
         .sb-summary {
@@ -448,7 +445,6 @@
             gap: 10px;
             text-align: left;
             font-size: 1.15rem;
-            min-height: 20px;
             word-break: break-word;
         }
 
@@ -522,11 +518,6 @@
             text-align: center;
             user-select: text;
             -webkit-user-select: text;
-            min-height: 34px;
-            box-sizing: content-box;
-            font-family: inherit;
-            color: var(--main-green);
-            background: white;
         }
 
         .modal-content input.wide-input {
@@ -543,7 +534,7 @@
             padding: 0;
         }
          
-        input:focus, textarea:focus {
+        input:focus {
             outline: none; 
             box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4); 
             border-radius: 5px; 
@@ -566,7 +557,6 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            gap: 10px;
             margin-top: 20px;
         }
 
@@ -578,20 +568,14 @@
             margin-top: 0px; 
         }
 
-        .modal-content h2 + .button-group, .dlg-msg + .button-group {
-            margin-top: 0;
-        }
-
         .save-btn {
             background-color: var(--main-green);
             color: white;
             border: none;
             padding: 10px;
-            min-height: 44px;
             font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
-            font-family: inherit;
         }
 
         .delete-btn {
@@ -599,11 +583,9 @@
             color: var(--main-green);
             border: 1px solid var(--main-green);
             padding: 10px;
-            min-height: 44px;
             font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
-            font-family: inherit;
         }
 
         .button-group.stack .save-btn, .button-group.stack .delete-btn {
@@ -629,7 +611,6 @@
             color: var(--main-green);
             border: 1px solid var(--main-green);
             border-radius: 5px;
-            min-height: 44px;
             padding: 6px 10px;
             font-size: 1rem;
             font-family: inherit;
@@ -645,7 +626,6 @@
             color: var(--main-green);
             border: 1px solid var(--main-green);
             border-radius: 25px;
-            min-height: 44px;
             padding: 8px 16px;
             font-size: 1rem;
             font-family: inherit;
@@ -663,7 +643,6 @@
             text-decoration: underline;
             font-size: 1rem;
             font-family: inherit;
-            min-height: 44px;
             cursor: pointer;
         }
 
@@ -698,14 +677,13 @@
 
         .seg button {
             flex: 1;
-            min-height: 44px;
             background: transparent;
             color: var(--main-green);
             border: none;
             font-size: 0.9rem;
             font-family: inherit;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 8px 6px;
         }
 
         .seg button + button {
@@ -719,7 +697,6 @@
 
         .modal-content label.toggle {
             font-size: 1rem;
-            min-height: 44px;
         }
 
         /* Pattern editor */
@@ -730,7 +707,6 @@
 
         .tabs button {
             flex: 1;
-            min-height: 44px;
             background: transparent;
             color: var(--main-green);
             border: 1px solid var(--main-green);
@@ -738,6 +714,7 @@
             font-size: 1rem;
             font-family: inherit;
             cursor: pointer;
+            padding: 8px;
         }
 
         .tabs button.on {
@@ -793,7 +770,6 @@
             border-radius: 25px;
             padding: 2px 4px;
             box-sizing: border-box;
-            min-height: 48px;
         }
 
         .pill-row.dragging {
@@ -812,7 +788,6 @@
             width: auto;
             min-width: 0;
             height: 36px;
-            min-height: 0;
             padding: 2px;
             font-size: 1.05rem;
             box-sizing: border-box;
@@ -885,11 +860,10 @@
         }
 
         .pick-list .opt {
-            min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 1.15rem;
             cursor: pointer;
@@ -902,7 +876,6 @@
         }
 
         .pick-list label.check {
-            min-height: 44px;
             justify-content: flex-start;
         }
 
@@ -917,7 +890,7 @@
     </button>
 
     <aside class="sidebar" id="sidebar">
-        <button class="sb-group-name" id="sbGroupName"></button>
+        <input type="text" class="sb-group-name" id="sbGroupName" aria-label="Group name">
         <div class="sb-summary" id="sbSummary"></div>
         <ul class="list" id="sbList"></ul>
         <button class="delete-btn" id="sbDeleteGroup">Delete group</button>
@@ -1087,13 +1060,13 @@
         // ===== State Variables =====
         let projects = [];
         let groups = [];
-        let activeProject = 0;       // index into projects; -1 while in the empty-group state
-        let activeGroupId = null;    // only set while in the empty-group state
+        let activeProject = 0;       
+        let activeGroupId = null;    
         let storedStitches = 0;
-        let pendingUndo = null;      // {kind, fn}
-        let settingsPending = null;  // advanced settings waiting for the main "Save & Close"
-        let advDraft = null;         // working copy inside the Advanced modal
-        let ed = null;               // pattern editor state
+        let pendingUndo = null;      
+        let settingsPending = null;  
+        let advDraft = null;         
+        let ed = null;               
         const collapsedGroups = new Set();
         const MAX_ROWS = 2000;
 
@@ -1154,8 +1127,6 @@
         }
 
         // ===== Pattern helpers =====
-        // pills: [{start, end, stitches}] — contiguous, covering rows 1..N
-        // blocks (used by the editor): [{len, stitches}]
         function patternLength(pills) {
             return pills && pills.length ? pills[pills.length - 1].end : 0;
         }
@@ -1344,7 +1315,6 @@
             return gid ? (groups.find(g => g.id === gid) || null) : null;
         }
 
-        // freeform helpers
         function loggedStitches(p, row) {
             const e = p.log.find(x => x.row === row);
             return e ? e.stitches : 0;
@@ -1365,7 +1335,6 @@
             return c;
         }
 
-        // After the pattern changes: keep rows/stitches consistent with it.
         function reconcile(a) {
             const len = patternLength(a.pattern);
             if (a.rows > len) a.rows = len;
@@ -1383,7 +1352,6 @@
             return null;
         }
 
-        // ===== Core display / persistence =====
         function persist() {
             localStorage.setItem("savedProjects", JSON.stringify(projects));
             localStorage.setItem("savedGroups", JSON.stringify(groups));
@@ -1459,9 +1427,7 @@
                 const match = obj.name.match(numberPattern);
                 if (match) {
                     const currentNumber = parseInt(match[1], 10);
-                    if (currentNumber > maxNumber) {
-                        maxNumber = currentNumber;
-                    }
+                    if (currentNumber > maxNumber) maxNumber = currentNumber;
                 }
             });
             return maxNumber + 1;
@@ -1474,9 +1440,7 @@
                 const match = obj.name.match(numberPattern);
                 if (match) {
                     const currentNumber = parseInt(match[1], 10);
-                    if (currentNumber > maxNumber) {
-                        maxNumber = currentNumber;
-                    }
+                    if (currentNumber > maxNumber) maxNumber = currentNumber;
                 }
             });
             return maxNumber + 1;
@@ -1535,7 +1499,6 @@
             }
         }
 
-        // ===== Dropdown / sidebar open-close =====
         function openDropdown() {
             fillDropdownList();
             dropdown.style.display = 'flex';
@@ -1568,7 +1531,7 @@
             const g = currentGroup();
             if (!g) return;
             const a = active();
-            $('sbGroupName').textContent = g.name;
+            $('sbGroupName').value = g.name;
             const members = projects.filter(p => p.groupId === g.id).sort(byName);
             if (a && a.showGroupSummary) {
                 const done = members.filter(isFinished).length;
@@ -1587,7 +1550,6 @@
             }
         }
 
-        // ===== Modal stack (only one visible at a time) =====
         const modalStack = [];
 
         function pushModal(el) {
@@ -1680,7 +1642,6 @@
             return api;
         }
 
-        // ===== Undo =====
         function setUndo(label, kind, fn) {
             pendingUndo = {kind: kind, fn: fn};
             undoBtn.innerText = label;
@@ -1693,8 +1654,6 @@
             undoBtn.style.display = 'none';
         }
 
-        // Mode-change undo restores a whole project snapshot, so it is dropped as soon as the
-        // counters change or another project is opened (it would otherwise erase that progress).
         function dismissModeUndo() {
             if (pendingUndo && pendingUndo.kind === 'mode') clearUndo();
         }
@@ -1710,14 +1669,6 @@
             projects[i] = snap;
         }
 
-        function offerModeUndo(snap) {
-            setUndo('Undo mode change', 'mode', () => {
-                restoreSnapshot(snap);
-                restoreBtn.style.display = 'none';
-                afterProjectChanged();
-            });
-        }
-
         undoBtn.addEventListener('click', () => {
             if (!pendingUndo) return;
             const u = pendingUndo;
@@ -1727,7 +1678,6 @@
             doMath();
         });
 
-        // ===== Swipe-to-dismiss (shared by Restore and Undo; same mechanic as before) =====
         function attachSwipe(btn, onDismiss) {
             let startX = 0;
             btn.addEventListener('touchstart', (e) => {
@@ -1758,7 +1708,6 @@
         attachSwipe(restoreBtn);
         attachSwipe(undoBtn, () => { pendingUndo = null; });
 
-        // ===== Navigation =====
         function switchToProject(i) {
             activeProject = i;
             activeGroupId = null;
@@ -1811,7 +1760,6 @@
             return g;
         }
 
-        // ===== Initialization =====
         window.onload = () => {
             projects = initializeProject();
             groups = initializeGroups();
@@ -1837,7 +1785,6 @@
             updateDisplay();
         };
 
-        // ===== Overlay blockers (prevents click-through) =====
         dropdownOverlay.addEventListener('click', (e) => {
             e.stopPropagation();
             closeDropdown();
@@ -1850,13 +1797,10 @@
 
         document.querySelectorAll('.modal').forEach(m => {
             m.addEventListener('click', (e) => {
-                if (e.target === m) {
-                    e.stopPropagation();
-                }
+                if (e.target === m) e.stopPropagation();
             });
         });
 
-        // ===== Dropdown =====
         titleBtn.addEventListener('click', () => {
             if (window.getComputedStyle(dropdown).display === 'none') {
                 openDropdown();
@@ -1896,7 +1840,6 @@
             updateDisplay();
         });
 
-        // ===== Sidebar =====
         sidebarArrow.addEventListener('click', () => {
             if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
         });
@@ -1907,20 +1850,13 @@
             switchToProject(parseInt(li.dataset.index, 10));
         });
 
-        $('sbGroupName').addEventListener('click', () => {
+        // In-place group renaming
+        $('sbGroupName').addEventListener('change', (e) => {
             const g = currentGroup();
             if (!g) return;
-            openDialog({
-                title: 'Rename group',
-                fields: [{id: 'name', label: '', type: 'text', value: g.name}],
-                buttons: [
-                    {label: 'Cancel', kind: 'delete'},
-                    {label: 'Save', validate: (v) => v.name.trim() ? '' : 'Please enter a name', onClick: (v) => {
-                        g.name = v.name.trim();
-                        updateDisplay();
-                    }}
-                ]
-            });
+            g.name = e.target.value.trim() || g.name;
+            e.target.value = g.name;
+            updateDisplay();
         });
 
         $('sbDeleteGroup').addEventListener('click', () => {
@@ -1997,7 +1933,6 @@
             doMath();
         }
 
-        // ===== Empty group state =====
         $('emptyNewProject').addEventListener('click', () => {
             createProject(activeGroupId);
         });
@@ -2030,7 +1965,6 @@
             });
         });
 
-        // ===== Counters =====
         function confirmOverflow(target, current, onContinue) {
             openDialog({
                 message: `This row's target is ${target} stitches, but you currently have ${current}. Continuing will reduce your stitches to ${target - 1}. Continue, or cancel?`,
@@ -2170,7 +2104,6 @@
             updateText("");
         });
 
-        // ===== Restore stitch count =====
         restoreBtn.addEventListener('click', () => {
             const a = active();
             if (!a) return;
@@ -2181,7 +2114,6 @@
             restoreBtn.style.display = 'none';
         });
 
-        // ===== Settings (main) =====
         function pickSettings(p) {
             return {
                 rowAdvanceBehavior: p.rowAdvanceBehavior,
@@ -2233,7 +2165,6 @@
             pushModal(modal);
         }
 
-        // Called whenever the active project is changed by something other than the counters
         function afterProjectChanged() {
             updateDisplay();
             syncSimpleInputs();
@@ -2245,7 +2176,7 @@
             openSettings();
         });
         
-        $('projectTitleModal').addEventListener('change', function(event) {
+        $('projectTitleModal').addEventListener('change', (event) => {
             const a = active();
             if (!a) return;
             a.name = event.target.value.trim() || a.name;
@@ -2253,7 +2184,6 @@
             updateDisplay();
         });
 
-        // Group picker
         $('groupField').addEventListener('click', () => {
             const a = active();
             if (!a) return;
@@ -2394,7 +2324,6 @@
             doMath();
         });
 
-        // ===== Advanced settings =====
         function renderAdvanced() {
             const a = active();
             if (!a || !advDraft) return;
@@ -2521,7 +2450,6 @@
             if (fromCompletion) openSettings();
         }
 
-        // ===== Mode transitions =====
         function convertToPattern(a, pills) {
             a.mode = 'pattern';
             a.pattern = pills;
@@ -2573,6 +2501,14 @@
             return /^\d+$/.test(String(v).trim()) && parseInt(v, 10) >= 1;
         }
 
+        function offerModeUndo(snap) {
+            setUndo('Undo mode change', 'mode', () => {
+                restoreSnapshot(snap);
+                restoreBtn.style.display = 'none';
+                afterProjectChanged();
+            });
+        }
+
         function startModeChange(newMode) {
             const a = active();
             if (!a || a.mode === newMode) return;
@@ -2583,7 +2519,7 @@
                     const err = patternFitError(a, pills);
                     if (err) return err;
                     convertToPattern(a, pills);
-                    finishModeChange(null);   // no undo: no data is lost
+                    finishModeChange(null);
                 });
                 return;
             }
@@ -2678,7 +2614,6 @@
             }
         }
 
-        // ===== Pattern editor =====
         function openPatternEditor(pills, onSave) {
             ed = {blocks: pillsToBlocks(pills), tab: 'pills', onSave: onSave};
             $('patternNote').textContent = '';
@@ -2807,7 +2742,6 @@
             popModal();
         });
 
-        // Drag to reorder: long-press (300ms) on the grip handle
         (function initPillDrag() {
             let st = null;
 
@@ -2912,7 +2846,6 @@
             });
         })();
 
-        // ===== Service Worker =====
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(() => console.log('Service Worker Registered'));
