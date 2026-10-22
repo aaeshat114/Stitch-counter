@@ -502,13 +502,14 @@
 
         .modal-content {
             background: var(--bg-color);
-            padding: 30px;
+            padding: 24px;
             border-radius: 15px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
             border: 0px solid transparent;
-            width: 66vw;
+            width: 88vw;
+            max-width: 420px;
             max-height: calc(88dvh - 60px);
             overflow-y: auto;
             box-sizing: border-box;
@@ -522,7 +523,7 @@
         }
 
         .modal-content label, .modal-content .row {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -531,7 +532,7 @@
 
         .modal-content input {      
             width: 60px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             padding: 5px;
             border: 1px solid var(--main-green);
             border-radius: 5px;
@@ -573,7 +574,7 @@
             background-color: transparent;
             font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             user-select: text;
             -webkit-user-select: text;
         }         
@@ -583,7 +584,7 @@
             flex-direction: row;
             justify-content: space-between;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .button-group.stack {
@@ -622,6 +623,10 @@
             font-family: inherit;
         }
 
+        .button-group .save-btn, .button-group .delete-btn {
+            flex: 1;
+        }
+
         .dlg-msg {
             margin: 0;
             font-size: 1rem;
@@ -633,7 +638,7 @@
         .field-block {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .outline-btn {
@@ -651,6 +656,13 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+        }
+
+        #groupField {
+            max-width: 55%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .outline-btn:disabled {
@@ -986,7 +998,7 @@
             <div id="notificationModal"></div>
             <button class="outline-btn" id="advancedBtn" style="width: 100%;">Advanced settings…</button>
             <div class="button-group">
-                <button class="delete-btn" id="deleteProjectBtn">Delete Project</button>
+                <button class="delete-btn" id="deleteProjectBtn">Delete</button>
                 <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
             </div>
         </div>
@@ -1028,8 +1040,8 @@
             <label class="toggle">Show progress in sidebar <input type="checkbox" id="advShowProgress"></label>
             <label class="toggle">Show group summary <input type="checkbox" id="advShowSummary"></label>
             <div class="adv-block" data-free style="display:none">
-                <button class="outline-btn" id="viewPatternBtn">View pattern</button>
-                <button class="outline-btn" id="exportPatternBtn">Export pattern</button>
+                <button class="outline-btn" id="viewPatternBtn" style="width: 100%;">View pattern</button>
+                <button class="outline-btn" id="exportPatternBtn" style="width: 100%;">Export pattern</button>
             </div>
             <div class="modal-note" id="notificationAdv"></div>
             <div class="button-group">
@@ -1882,7 +1894,6 @@
             switchToProject(parseInt(li.dataset.index, 10));
         });
 
-        // ===== In-Place Group Renaming =====
         $('sbGroupName').addEventListener('click', () => {
             const g = currentGroup();
             if (!g) return;
@@ -1926,15 +1937,15 @@
                     message: `"Delete projects" permanently removes the ${n} project${n === 1 ? '' : 's'} in this group. "Ungroup projects" keeps ${n === 1 ? 'it' : 'them'} as standalone.`,
                     buttons: [
                         {label: 'Delete projects', kind: 'delete', onClick: () => deleteGroup(g.id, 'delete')},
-                        {label: 'Ungroup projects', onClick: () => deleteGroup(g.id, 'ungroup')},
-                        {label: 'Cancel', kind: 'delete'}
+                        {label: 'Ungroup projects', kind: 'delete', onClick: () => deleteGroup(g.id, 'ungroup')},
+                        {label: 'Cancel'}
                     ]
                 });
             } else {
                 openDialog({
                     title: `Delete group "${g.name}"?`,
                     buttons: [
-                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Cancel'},
                         {label: 'Delete group', kind: 'delete', onClick: () => deleteGroup(g.id, 'delete')}
                     ]
                 });
@@ -2009,7 +2020,7 @@
                     return listEl;
                 },
                 buttons: free.length ? [
-                    {label: 'Cancel', kind: 'delete'},
+                    {label: 'Cancel'},
                     {label: 'Add', 
                      validate: () => listEl.querySelector('input:checked') ? '' : 'Select at least one project',
                      onClick: () => {
@@ -2258,7 +2269,7 @@
                     });
                     return list;
                 },
-                buttons: [{label: 'Cancel', kind: 'delete'}]
+                buttons: [{label: 'Cancel'}]
             });
         });
 
@@ -2431,7 +2442,7 @@
                         popModal();
                     }},
                     {label: "Don't save", kind: 'delete', onClick: () => popModal()},
-                    {label: 'Cancel', kind: 'delete'}
+                    {label: 'Cancel'}
                 ]
             });
         });
@@ -2567,8 +2578,8 @@
                 openDialog({
                     message: `Remove the stitches-per-row and total-rows goal? Your current progress (${a.rows} rows, ${a.stitches} stitches) will be kept.`,
                     buttons: [
-                        {label: 'Cancel', kind: 'delete'},
-                        {label: 'Yes', onClick: () => {
+                        {label: 'Cancel'},
+                        {label: 'Yes', kind: 'delete', onClick: () => {
                             const snap = snapshot(a);
                             convertToFreeform(a);
                             finishModeChange(snap);
@@ -2584,7 +2595,7 @@
                     message: 'How many stitches are in each row?',
                     fields: [{id: 'spr', label: 'Stitches per row:', value: targetFor(a, a.rows), min: 1}],
                     buttons: [
-                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Cancel'},
                         {label: 'Switch',
                          validate: (v) => positiveInt(v.spr) ? '' : 'Enter a stitch count of at least 1',
                          onClick: (v) => {
@@ -2601,8 +2612,8 @@
                 openDialog({
                     message: 'Switch to Freeform? Your pattern will be kept as reference but will no longer drive the counter.',
                     buttons: [
-                        {label: 'Cancel', kind: 'delete'},
-                        {label: 'Yes', onClick: () => {
+                        {label: 'Cancel'},
+                        {label: 'Yes', kind: 'delete', onClick: () => {
                             const snap = snapshot(a);
                             convertToFreeform(a);
                             finishModeChange(snap);
@@ -2621,7 +2632,7 @@
                         {id: 'total', label: 'Total rows goal:', value: Math.max(10, a.rows + 1), min: 1}
                     ],
                     buttons: [
-                        {label: 'Cancel', kind: 'delete'},
+                        {label: 'Cancel'},
                         {label: 'Switch',
                          validate: (v) => {
                             if (!positiveInt(v.spr) || !positiveInt(v.total)) return 'Enter whole numbers of at least 1';
