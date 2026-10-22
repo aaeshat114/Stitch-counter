@@ -982,7 +982,7 @@
                 <div class="hint" id="patternSummary"></div>
             </div>
             <div class="field-block" id="freeformFields" style="display:none">
-                <button class="outline-btn" id="markCompletedBtn" style="width: 100%;">Mark as completed</button>
+                <button class="outline-btn" id="markCompletedBtn" style="width: 100%;">Finish project</button>
             </div>
             <div id="notificationModal"></div>
             <button class="outline-btn" id="advancedBtn" style="width: 100%;">Advanced settings…</button>
@@ -1006,21 +1006,21 @@
                 </div>
             </div>
             <div class="adv-block" data-notfree>
-                <div class="adv-label">Row +/- behavior</div>
+                <div class="adv-label">When advancing rows:</div>
                 <div class="seg" data-key="rowAdvanceBehavior">
-                    <button data-v="fresh">Fresh row (0 stitches)</button>
-                    <button data-v="keep">Keep stitches</button>
+                    <button data-v="fresh">Reset stitches to 0</button>
+                    <button data-v="keep">Keep current stitches</button>
                 </div>
             </div>
             <div class="adv-block" data-notfree>
-                <div class="adv-label">Stitch display</div>
+                <div class="adv-label">Stitch count format</div>
                 <div class="seg" data-key="stitchDisplay">
                     <button data-v="current">Current only</button>
-                    <button data-v="currentTarget">Current / Target</button>
+                    <button data-v="currentTarget">Current / Total</button>
                 </div>
             </div>
             <div class="adv-block" data-notfree>
-                <div class="adv-label">Row display</div>
+                <div class="adv-label">Row count format</div>
                 <div class="seg" data-key="rowDisplay">
                     <button data-v="current">Current only</button>
                     <button data-v="currentTotal">Current / Total</button>
@@ -1030,7 +1030,7 @@
             <label class="toggle">Show group summary <input type="checkbox" id="advShowSummary"></label>
             <div class="adv-block" data-free style="display:none">
                 <button class="outline-btn" id="viewPatternBtn" style="width: 100%;">View pattern</button>
-                <button class="outline-btn" id="exportPatternBtn" style="width: 100%;">Export pattern</button>
+                <button class="outline-btn" id="exportPatternBtn" style="width: 100%;">Export as pattern</button>
             </div>
             <div class="modal-note" id="notificationAdv"></div>
             <div class="button-group">
@@ -1045,16 +1045,16 @@
         <div class="modal-content wide">
             <div class="tabs">
                 <button data-tab="text" id="peTabText">Text</button>
-                <button data-tab="pills" id="peTabPills" class="on">Pills</button>
+                <button data-tab="pills" id="peTabPills" class="on">Blocks</button>
             </div>
             <div id="peText" style="display:none">
                 <textarea id="peTextarea" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
-                <div class="hint" style="margin-top:8px">Separate with commas, semicolons or new lines. Examples: <b>40, 42, 42</b> or <b>row 1: 40; row 2-3: 42</b></div>
+                <div class="hint" style="margin-top:8px">Separate with commas, semicolons, or new lines. Example: 40, 42, 42 or row 1: 40; rows 2-3: 42</div>
             </div>
             <div id="pePills">
-                <div class="pill-head"><span></span><span>Rows</span><span># rows</span><span>Stitches</span><span></span></div>
+                <div class="pill-head"><span></span><span>Rows</span><span>Block length</span><span>Stitches</span><span></span></div>
                 <div class="pill-list" id="pillList"></div>
-                <button class="outline-btn" id="addPillBtn" style="width:100%">+ Add pill</button>
+                <button class="outline-btn" id="addPillBtn" style="width:100%">+ Add block</button>
             </div>
             <div class="modal-note" id="patternNote"></div>
             <div class="button-group">
@@ -1090,11 +1090,11 @@
 
         const MSG = {
             finished: "Please change total rows goal if you wish to continue →",
-            locked: "Project is locked — unlock in settings to continue.",
-            needStitch: "Add at least one stitch before going up a row.",
+            locked: "Please reopen this project if you wish to continue →",
+            needStitch: "Please add at least one stitch before starting a new row.",
             tooManyRows: "You've already finished more rows than the goal",
             tooManyPatternRows: "You've already finished more rows than the pattern has",
-            nothing: "Nothing to export yet."
+            nothing: "Please add at least one row before exporting as a pattern."
         };
 
         // ===== DOM Elements =====
@@ -1388,7 +1388,7 @@
             let sText, rText;
             if (p.mode === 'freeform') {
                 sText = String(p.stitches);
-                rText = String(p.rows) + (p.completed ? ' ✓' : '');
+                rText = String(p.rows);
             } else {
                 const total = getTotalRows(p);
                 const t = targetFor(p, p.rows);
@@ -1515,8 +1515,8 @@
         function doMath() {
             const a = active();
             if (!a) return;
-            if (a.mode !== 'freeform' && a.rows === getTotalRows(a)) {
-                updateText("Congratulations, you've finished!"); 
+            if (isFinished(a)) {
+                updateText("Congratulations, you've finished!");
             } else {
                 updateText(""); 
             }
@@ -2172,7 +2172,7 @@
             $('simpleFields').style.display = a.mode === 'simple' ? 'flex' : 'none';
             $('patternFields').style.display = a.mode === 'pattern' ? 'flex' : 'none';
             $('freeformFields').style.display = a.mode === 'freeform' ? 'flex' : 'none';
-            $('markCompletedBtn').textContent = a.completed ? 'Unmark completed' : 'Mark as completed';
+            $('markCompletedBtn').textContent = a.completed ? 'Reopen project' : 'Finish project';
             if (a.mode === 'pattern') {
                 const arr = expandPills(a.pattern);
                 const mn = Math.min(...arr), mx = Math.max(...arr);
@@ -2267,19 +2267,19 @@
             if (!a || a.mode !== 'freeform') return;
             if (a.completed) {
                 a.completed = false;
-                updateText('');
                 afterProjectChanged();
+                doMath();            // clears the congratulations message
                 return;
             }
             a.completed = true;
-            updateText('');
             afterProjectChanged();
+            doMath();                // shows the congratulations message
             if (!freeformCounts(a, true).length) {
                 noteAll(MSG.nothing);
                 return;
             }
             openDialog({
-                title: 'Do you want to export this as a pattern project?',
+                message: 'Would you like to export as a pattern now? You can also export it later in settings.',
                 buttons: [
                     {label: 'No', kind: 'delete'},
                     {label: 'Yes', onClick: () => exportPattern(true)}
@@ -2697,7 +2697,7 @@
             } else if (t.classList.contains('pill-len')) {
                 const n = parseInt(v, 10);
                 if (!/^\d+$/.test(v) || n < 1) {
-                    editorNote(`Row ${rowNo}: a pill needs at least 1 row`);
+                    editorNote(`Row ${rowNo}: a block needs at least 1 row`);
                 } else if (editorTotalRows() - b.len + n > MAX_ROWS) {
                     editorNote(`A pattern can have at most ${MAX_ROWS} rows`);
                 } else {
