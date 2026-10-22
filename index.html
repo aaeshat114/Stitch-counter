@@ -754,9 +754,14 @@
 
         .pill-head, .pill-row {
             display: grid;
-            grid-template-columns: 44px 1fr 56px 68px 44px;
+            grid-template-columns:
+                32px
+                56px
+                minmax(0, 1fr)
+                minmax(0, 1fr)
+                32px;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .pill-head {
@@ -764,6 +769,12 @@
             opacity: 0.8;
             text-align: center;
             margin-bottom: 6px;
+            padding: 0 7px;
+        }
+
+        .pill-head span {
+            text-align: center;
+            white-space: nowrap;
         }
 
         .pill-list {
@@ -795,8 +806,9 @@
 
         .pill-range {
             font-weight: bold;
-            font-size: 1.05rem;
+            font-size: 0.9rem;
             text-align: center;
+            white-space: nowrap;
         }
 
         .modal-content input.pill-len, .modal-content input.pill-st {
@@ -812,6 +824,7 @@
         .grip {
             width: 44px;
             height: 44px;
+            margin: 0 -12px 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -824,6 +837,8 @@
         .pill-del {
             width: 44px;
             height: 44px;
+            margin: 0 -6px;
+            padding: 0;
             background: none;
             border: none;
             color: var(--main-green);
@@ -834,7 +849,7 @@
 
         .pill-del:disabled {
             opacity: 0.25;
-        }
+          }
 
         .view-pills {
             display: flex;
