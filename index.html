@@ -422,23 +422,26 @@
             padding: 8px 4px;
             min-height: 44px;
             cursor: pointer;
+            border-bottom: 1px dashed rgba(90, 128, 103, 0.5);
             word-break: break-word;
         }
 
         .sb-group-input {
-            width: 60px;
-            font-size: 1.1rem;
-            padding: 5px;
-            border: 1px solid var(--main-green);
-            border-radius: 5px;
-            text-align: center;
+            all: unset;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: left;
+            color: var(--main-green);
+            padding: 8px 4px;
+            min-height: 44px;
+            width: 100%;
+            background-color: transparent;
+            border: 0px;
             user-select: text;
             -webkit-user-select: text;
-            min-height: 34px;
-            box-sizing: content-box;
-            font-family: inherit;
-            color: var(--main-green);
-            background-color: transparent;
+            word-break: break-word;
         }
 
         .sb-summary {
