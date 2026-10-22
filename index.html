@@ -130,6 +130,7 @@
             border-radius: 8px;
             font-size: 1.2rem;
             transition: background-color 0.2s;
+            min-height: 20px;
         }
 
         .list li:active {
@@ -167,6 +168,7 @@
             color: white;
             border: none;
             padding: 12px;
+            min-height: 44px;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
@@ -209,6 +211,7 @@
             color: white;
             border: none;
             padding: 12px;
+            min-height: 52px;
             font-size: 1.2rem;
             font-family: inherit;
             border-radius: 25px;
@@ -273,6 +276,8 @@
             color: white;
             border: none;
             padding: 10px 20px;
+            min-height: 44px;
+            align-items: center;
             font-size: 1.1rem;
             border-radius: 25px;
             cursor: pointer;
@@ -415,12 +420,26 @@
             text-align: left;
             color: var(--main-green);
             padding: 8px 4px;
-            width: 100%;
-            cursor: text;
+            min-height: 44px;
+            cursor: pointer;
             border-bottom: 1px dashed rgba(90, 128, 103, 0.5);
             word-break: break-word;
-            user-select: text;
-            -webkit-user-select: text;
+        }
+
+        .sb-group-input {
+            all: unset;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: left;
+            color: var(--main-green);
+            padding: 8px 4px;
+            min-height: 44px;
+            width: 100%;
+            border-bottom: 1px solid var(--main-green);
+            background: white;
+            border-radius: 5px;
         }
 
         .sb-summary {
@@ -445,6 +464,7 @@
             gap: 10px;
             text-align: left;
             font-size: 1.15rem;
+            min-height: 20px;
             word-break: break-word;
         }
 
@@ -491,13 +511,13 @@
             width: 66vw;
             max-height: calc(88dvh - 60px);
             overflow-y: auto;
+            box-sizing: border-box;
         }
 
         .modal-content.wide {
             width: 94vw;
             max-width: 500px;
-            padding: 20px;
-            box-sizing: border-box;
+            padding: 25px;
             max-height: 90dvh;
         }
 
@@ -518,6 +538,11 @@
             text-align: center;
             user-select: text;
             -webkit-user-select: text;
+            min-height: 34px;
+            box-sizing: content-box;
+            font-family: inherit;
+            color: var(--main-green);
+            background: white;
         }
 
         .modal-content input.wide-input {
@@ -534,7 +559,7 @@
             padding: 0;
         }
          
-        input:focus {
+        input:focus, textarea:focus {
             outline: none; 
             box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4); 
             border-radius: 5px; 
@@ -557,6 +582,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            gap: 10px;
             margin-top: 20px;
         }
 
@@ -568,28 +594,32 @@
             margin-top: 0px; 
         }
 
+        .modal-content h2 + .button-group, .dlg-msg + .button-group {
+            margin-top: 0;
+        }
+
         .save-btn {
             background-color: var(--main-green);
             color: white;
             border: none;
-            padding: 10px;
-            font-size: 0.8rem;
-            border-radius: 5px;
+            padding: 10px 16px;
+            min-height: 44px;
+            font-size: 0.95rem;
+            border-radius: 8px;
             cursor: pointer;
+            font-family: inherit;
         }
 
         .delete-btn {
             background-color: white;
             color: var(--main-green);
             border: 1px solid var(--main-green);
-            padding: 10px;
-            font-size: 0.8rem;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .button-group.stack .save-btn, .button-group.stack .delete-btn {
+            padding: 10px 16px;
+            min-height: 44px;
             font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .dlg-msg {
@@ -606,44 +636,25 @@
             gap: 20px;
         }
 
-        .field-btn {
-            background: white;
-            color: var(--main-green);
-            border: 1px solid var(--main-green);
-            border-radius: 5px;
-            padding: 6px 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            max-width: 55%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
         .outline-btn {
             background: transparent;
             color: var(--main-green);
             border: 1px solid var(--main-green);
             border-radius: 25px;
+            min-height: 44px;
             padding: 8px 16px;
             font-size: 1rem;
             font-family: inherit;
             cursor: pointer;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .outline-btn:disabled {
             opacity: 0.4;
-        }
-
-        .link-btn {
-            background: none;
-            border: none;
-            color: var(--main-green);
-            text-decoration: underline;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
         }
 
         .hint {
@@ -677,13 +688,14 @@
 
         .seg button {
             flex: 1;
+            min-height: 44px;
             background: transparent;
             color: var(--main-green);
             border: none;
             font-size: 0.9rem;
             font-family: inherit;
             cursor: pointer;
-            padding: 8px 6px;
+            padding: 4px 6px;
         }
 
         .seg button + button {
@@ -697,6 +709,7 @@
 
         .modal-content label.toggle {
             font-size: 1rem;
+            min-height: 44px;
         }
 
         /* Pattern editor */
@@ -707,6 +720,7 @@
 
         .tabs button {
             flex: 1;
+            min-height: 44px;
             background: transparent;
             color: var(--main-green);
             border: 1px solid var(--main-green);
@@ -714,7 +728,6 @@
             font-size: 1rem;
             font-family: inherit;
             cursor: pointer;
-            padding: 8px;
         }
 
         .tabs button.on {
@@ -770,6 +783,7 @@
             border-radius: 25px;
             padding: 2px 4px;
             box-sizing: border-box;
+            min-height: 48px;
         }
 
         .pill-row.dragging {
@@ -788,6 +802,7 @@
             width: auto;
             min-width: 0;
             height: 36px;
+            min-height: 0;
             padding: 2px;
             font-size: 1.05rem;
             box-sizing: border-box;
@@ -860,10 +875,11 @@
         }
 
         .pick-list .opt {
+            min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            padding: 8px;
             border-radius: 8px;
             font-size: 1.15rem;
             cursor: pointer;
@@ -876,6 +892,7 @@
         }
 
         .pick-list label.check {
+            min-height: 44px;
             justify-content: flex-start;
         }
 
@@ -890,7 +907,7 @@
     </button>
 
     <aside class="sidebar" id="sidebar">
-        <input type="text" class="sb-group-name" id="sbGroupName" aria-label="Group name">
+        <button class="sb-group-name" id="sbGroupName"></button>
         <div class="sb-summary" id="sbSummary"></div>
         <ul class="list" id="sbList"></ul>
         <button class="delete-btn" id="sbDeleteGroup">Delete group</button>
@@ -947,7 +964,7 @@
             <input type="text" id="projectTitleModal">
             <div class="row">
                 <span>Group:</span>
-                <button class="field-btn" id="groupField"><span id="groupFieldVal">No group</span> ▾</button>
+                <button class="outline-btn" id="groupField"><span id="groupFieldVal">No group</span> ▾</button>
             </div>
             <div class="field-block" id="simpleFields">
                 <label>
@@ -960,14 +977,14 @@
                 </label>
             </div>
             <div class="field-block" id="patternFields" style="display:none">
-                <button class="outline-btn" id="openPatternEditorBtn">Open pattern editor</button>
+                <button class="outline-btn" id="openPatternEditorBtn" style="width: 100%;">Open pattern editor</button>
                 <div class="hint" id="patternSummary"></div>
             </div>
             <div class="field-block" id="freeformFields" style="display:none">
-                <button class="outline-btn" id="markCompletedBtn">Mark as completed</button>
+                <button class="outline-btn" id="markCompletedBtn" style="width: 100%;">Mark as completed</button>
             </div>
             <div id="notificationModal"></div>
-            <button class="link-btn" id="advancedBtn">Advanced settings…</button>
+            <button class="outline-btn" id="advancedBtn" style="width: 100%;">Advanced settings…</button>
             <div class="button-group">
                 <button class="delete-btn" id="deleteProjectBtn">Delete Project</button>
                 <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
@@ -1352,6 +1369,7 @@
             return null;
         }
 
+        // ===== Core display / persistence =====
         function persist() {
             localStorage.setItem("savedProjects", JSON.stringify(projects));
             localStorage.setItem("savedGroups", JSON.stringify(groups));
@@ -1427,7 +1445,9 @@
                 const match = obj.name.match(numberPattern);
                 if (match) {
                     const currentNumber = parseInt(match[1], 10);
-                    if (currentNumber > maxNumber) maxNumber = currentNumber;
+                    if (currentNumber > maxNumber) {
+                        maxNumber = currentNumber;
+                    }
                 }
             });
             return maxNumber + 1;
@@ -1440,7 +1460,9 @@
                 const match = obj.name.match(numberPattern);
                 if (match) {
                     const currentNumber = parseInt(match[1], 10);
-                    if (currentNumber > maxNumber) maxNumber = currentNumber;
+                    if (currentNumber > maxNumber) {
+                        maxNumber = currentNumber;
+                    }
                 }
             });
             return maxNumber + 1;
@@ -1531,7 +1553,7 @@
             const g = currentGroup();
             if (!g) return;
             const a = active();
-            $('sbGroupName').value = g.name;
+            $('sbGroupName').textContent = g.name;
             const members = projects.filter(p => p.groupId === g.id).sort(byName);
             if (a && a.showGroupSummary) {
                 const done = members.filter(isFinished).length;
@@ -1669,6 +1691,14 @@
             projects[i] = snap;
         }
 
+        function offerModeUndo(snap) {
+            setUndo('Undo mode change', 'mode', () => {
+                restoreSnapshot(snap);
+                restoreBtn.style.display = 'none';
+                afterProjectChanged();
+            });
+        }
+
         undoBtn.addEventListener('click', () => {
             if (!pendingUndo) return;
             const u = pendingUndo;
@@ -1797,7 +1827,9 @@
 
         document.querySelectorAll('.modal').forEach(m => {
             m.addEventListener('click', (e) => {
-                if (e.target === m) e.stopPropagation();
+                if (e.target === m) {
+                    e.stopPropagation();
+                }
             });
         });
 
@@ -1850,13 +1882,38 @@
             switchToProject(parseInt(li.dataset.index, 10));
         });
 
-        // In-place group renaming
-        $('sbGroupName').addEventListener('change', (e) => {
+        // ===== In-Place Group Renaming =====
+        $('sbGroupName').addEventListener('click', () => {
             const g = currentGroup();
             if (!g) return;
-            g.name = e.target.value.trim() || g.name;
-            e.target.value = g.name;
-            updateDisplay();
+            const el = $('sbGroupName');
+            const currentName = g.name;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'sb-group-input';
+            input.value = currentName;
+
+            el.replaceWith(input);
+            input.focus();
+            input.select();
+
+            const save = () => {
+                const newName = input.value.trim();
+                if (newName) {
+                    g.name = newName;
+                }
+                updateDisplay();
+            };
+
+            input.addEventListener('blur', save);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
+                } else if (e.key === 'Escape') {
+                    input.value = currentName;
+                    input.blur();
+                }
+            });
         });
 
         $('sbDeleteGroup').addEventListener('click', () => {
@@ -1964,16 +2021,6 @@
                 ] : [{label: 'Close', kind: 'delete'}]
             });
         });
-
-        function confirmOverflow(target, current, onContinue) {
-            openDialog({
-                message: `This row's target is ${target} stitches, but you currently have ${current}. Continuing will reduce your stitches to ${target - 1}. Continue, or cancel?`,
-                buttons: [
-                    {label: 'Cancel', kind: 'delete'},
-                    {label: 'Continue', onClick: onContinue}
-                ]
-            });
-        }
 
         $('stitchPlus').addEventListener('click', () => {
             const a = active();
@@ -2176,7 +2223,7 @@
             openSettings();
         });
         
-        $('projectTitleModal').addEventListener('change', (event) => {
+        $('projectTitleModal').addEventListener('change', function(event) {
             const a = active();
             if (!a) return;
             a.name = event.target.value.trim() || a.name;
@@ -2501,14 +2548,6 @@
             return /^\d+$/.test(String(v).trim()) && parseInt(v, 10) >= 1;
         }
 
-        function offerModeUndo(snap) {
-            setUndo('Undo mode change', 'mode', () => {
-                restoreSnapshot(snap);
-                restoreBtn.style.display = 'none';
-                afterProjectChanged();
-            });
-        }
-
         function startModeChange(newMode) {
             const a = active();
             if (!a || a.mode === newMode) return;
@@ -2519,7 +2558,7 @@
                     const err = patternFitError(a, pills);
                     if (err) return err;
                     convertToPattern(a, pills);
-                    finishModeChange(null);
+                    finishModeChange(null);   
                 });
                 return;
             }
