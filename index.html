@@ -29,9 +29,9 @@
 
         #dropdownOverlay {
             position: fixed;
-            top: 0; 
-            left: 0; 
-            right: 0; 
+            top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.5);
             display: none;
@@ -51,7 +51,7 @@
         h1 {
             margin: 0;
         }
-        
+
         h2 {
             color: var(--main-green);
             font-family: inherit;
@@ -65,7 +65,7 @@
             box-sizing: border-box;
             background-color: transparent;
             color: var(--main-green);
-            border: 0px solid transparent;
+            border: none;
             padding: 10px 20px;
             cursor: pointer;
             font-family: inherit;
@@ -90,8 +90,6 @@
 
         .project-title.active {
             background-color: var(--bg-color);
-            border-color: transparent;
-            border-bottom-color: transparent;
             border-radius: 15px 15px 0 0;
             position: relative;
             z-index: 22;
@@ -105,8 +103,7 @@
             background: var(--bg-color);
             padding: 0 20px 20px 20px;
             border-radius: 0 0 15px 15px;
-            border: 0px transparent;
-            border-top: none;
+            border: none;
             min-width: 250px;
             box-sizing: border-box;
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
@@ -234,7 +231,7 @@
         .label {
             font-size: 1.5rem;
             margin-bottom: 15px;
-        }       
+        }
 
         .controls {
             display: flex;
@@ -307,7 +304,7 @@
             width: 45px;
             height: 45px;
             color: var(--main-green);
-            opacity: 0.25;        
+            opacity: 0.25;
             cursor: pointer;
         }
 
@@ -342,7 +339,6 @@
             display: none;
         }
 
-        /* ---------- Sidebar ---------- */
         .sidebar-arrow {
             display: none;
             position: fixed;
@@ -378,9 +374,9 @@
 
         #sidebarOverlay {
             position: fixed;
-            top: 0; 
-            left: 0; 
-            right: 0; 
+            top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.5);
             display: none;
@@ -411,8 +407,6 @@
             pointer-events: auto;
         }
 
-        /* Always an input (same approach as #projectTitleModal), so nothing changes visually
-           between typing and not typing. The id selector also beats the global input:focus ring. */
         #sbGroupName {
             all: unset;
             box-sizing: border-box;
@@ -426,7 +420,7 @@
             text-align: left;
             color: var(--main-green);
             background-color: transparent;
-            border: 0px;
+            border: none;
             user-select: text;
             -webkit-user-select: text;
         }
@@ -475,13 +469,12 @@
             padding: 12px;
         }
 
-        /* ---------- Modals ---------- */
         .modal {
             display: none;
             position: fixed;
-            top: 0; 
-            left: 0; 
-            right: 0; 
+            top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.5);
             align-items: center;
@@ -496,7 +489,7 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-            border: 0px solid transparent;
+            border: none;
             width: 88vw;
             max-width: 420px;
             max-height: calc(88dvh - 60px);
@@ -519,7 +512,7 @@
             gap: 10px;
         }
 
-        .modal-content input {      
+        .modal-content input {
             width: 60px;
             font-size: 1.1rem;
             padding: 5px;
@@ -548,17 +541,17 @@
             accent-color: var(--main-green);
             padding: 0;
         }
-         
+
         input:focus, textarea:focus {
-            outline: none; 
-            box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4); 
-            border-radius: 5px; 
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(90, 128, 103, 0.4);
+            border-radius: 5px;
         }
-         
+
         #projectTitleModal {
             all: unset;
             color: var(--main-green);
-            border: 0px;
+            border: none;
             width: 100%;
             background-color: transparent;
             font-size: 1.2rem;
@@ -566,8 +559,8 @@
             margin-bottom: 10px;
             user-select: text;
             -webkit-user-select: text;
-        }         
-                 
+        }
+
         .button-group {
             display: flex;
             flex-direction: row;
@@ -579,19 +572,16 @@
         .button-group.stack {
             flex-direction: column;
         }
-        
+
         #confirmModal .button-group {
-            margin-top: 0px; 
+            margin-top: 0px;
         }
 
         .modal-content h2 + .button-group, .dlg-msg + .button-group {
             margin-top: 0;
         }
 
-        .save-btn {
-            background-color: var(--main-green);
-            color: white;
-            border: none;
+        .save-btn, .delete-btn {
             padding: 10px 16px;
             min-height: 44px;
             font-size: 0.95rem;
@@ -600,16 +590,16 @@
             font-family: inherit;
         }
 
+        .save-btn {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+        }
+
         .delete-btn {
             background-color: white;
             color: var(--main-green);
             border: 1px solid var(--main-green);
-            padding: 10px 16px;
-            min-height: 44px;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
         }
 
         .button-group .save-btn, .button-group .delete-btn {
@@ -654,6 +644,10 @@
             white-space: nowrap;
         }
 
+        .outline-btn.full {
+            width: 100%;
+        }
+
         .outline-btn:disabled {
             opacity: 0.4;
         }
@@ -668,7 +662,6 @@
             display: none;
         }
 
-        /* Advanced settings */
         .adv-block {
             display: flex;
             flex-direction: column;
@@ -713,7 +706,6 @@
             min-height: 44px;
         }
 
-        /* Pattern editor */
         .tabs {
             display: flex;
             gap: 8px;
@@ -911,7 +903,6 @@
             min-height: 44px;
             justify-content: flex-start;
         }
-
     </style>
 </head>
 <body>
@@ -928,7 +919,7 @@
         <ul class="list" id="sbList"></ul>
         <button class="delete-btn" id="sbDeleteGroup">Delete group</button>
     </aside>
-    
+
     <div class="header-section">
         <h1><button class="project-title" id="projectTitle"></button></h1>
         <div class="dropdown" id="dropdown">
@@ -967,14 +958,13 @@
         <button class="restore-btn" id="restoreBtn">Restore stitch count</button>
         <button class="restore-btn" id="undoBtn">Undo</button>
     </div>
-    
+
     <div class="gear-icon" id="settingsBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
         </svg>
     </div>
-    
-    <!-- Main settings -->
+
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <input type="text" id="projectTitleModal">
@@ -993,14 +983,14 @@
                 </label>
             </div>
             <div class="field-block" id="patternFields" style="display:none">
-                <button class="outline-btn" id="openPatternEditorBtn" style="width: 100%;">Open pattern editor</button>
+                <button class="outline-btn full" id="openPatternEditorBtn">Open pattern editor</button>
                 <div class="hint" id="patternSummary"></div>
             </div>
             <div class="field-block" id="freeformFields" style="display:none">
-                <button class="outline-btn" id="markCompletedBtn" style="width: 100%;">Finish project</button>
+                <button class="outline-btn full" id="markCompletedBtn">Finish project</button>
             </div>
             <div id="notificationModal"></div>
-            <button class="outline-btn" id="advancedBtn" style="width: 100%;">Advanced settings</button>
+            <button class="outline-btn full" id="advancedBtn">Advanced settings…</button>
             <div class="button-group">
                 <button class="delete-btn" id="deleteProjectBtn">Delete</button>
                 <button class="save-btn" id="saveSettingsBtn">Save & Close</button>
@@ -1008,7 +998,6 @@
         </div>
     </div>
 
-    <!-- Advanced settings -->
     <div class="modal" id="advancedModal">
         <div class="modal-content wide">
             <h2>Advanced settings</h2>
@@ -1044,8 +1033,8 @@
             <label class="toggle">Show progress in sidebar <input type="checkbox" id="advShowProgress"></label>
             <label class="toggle">Show group summary <input type="checkbox" id="advShowSummary"></label>
             <div class="adv-block" data-free style="display:none">
-                <button class="outline-btn" id="viewPatternBtn" style="width: 100%;">View pattern</button>
-                <button class="outline-btn" id="exportPatternBtn" style="width: 100%;">Export as pattern</button>
+                <button class="outline-btn full" id="viewPatternBtn">View pattern</button>
+                <button class="outline-btn full" id="exportPatternBtn">Export as pattern</button>
             </div>
             <div class="modal-note" id="notificationAdv"></div>
             <div class="button-group">
@@ -1055,7 +1044,6 @@
         </div>
     </div>
 
-    <!-- Pattern editor -->
     <div class="modal" id="patternEditorModal">
         <div class="modal-content wide">
             <div class="tabs">
@@ -1069,7 +1057,7 @@
             <div id="pePills">
                 <div class="pill-head"><span></span><span>Rows</span><span>Block length</span><span>Stitches</span><span></span></div>
                 <div class="pill-list" id="pillList"></div>
-                <button class="outline-btn" id="addPillBtn" style="width:100%">+ Add block</button>
+                <button class="outline-btn full" id="addPillBtn">+ Add block</button>
             </div>
             <div class="modal-note" id="patternNote"></div>
             <div class="button-group">
@@ -1078,7 +1066,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal" id="confirmModal">
         <div class="modal-content">
             <h2>Do you really want to delete this project?</h2>
@@ -1090,16 +1078,15 @@
     </div>
 
     <script>
-        // ===== State Variables =====
         let projects = [];
         let groups = [];
-        let activeProject = 0;       
-        let activeGroupId = null;    
+        let activeProject = 0;
+        let activeGroupId = null;
         let storedStitches = 0;
-        let pendingUndo = null;      
-        let settingsPending = null;  
-        let advDraft = null;         
-        let ed = null;               
+        let pendingUndo = null;
+        let settingsPending = null;
+        let advDraft = null;
+        let ed = null;
         const collapsedGroups = new Set();
         const MAX_ROWS = 2000;
 
@@ -1112,7 +1099,6 @@
             nothing: "Please add at least one row before exporting as a pattern."
         };
 
-        // ===== DOM Elements =====
         const $ = (id) => document.getElementById(id);
         const stitchDisplay = $('stitchDisplay');
         const rowDisplay = $('rowDisplay');
@@ -1134,7 +1120,6 @@
         const emptyState = $('emptyState');
         const pillList = $('pillList');
 
-        // ===== Helpers =====
         function uid(prefix) {
             return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         }
@@ -1159,7 +1144,6 @@
             return p.mode === 'freeform' && p.completed;
         }
 
-        // ===== Pattern helpers =====
         function patternLength(pills) {
             return pills && pills.length ? pills[pills.length - 1].end : 0;
         }
@@ -1258,7 +1242,6 @@
             return {pills: countsToPills(counts)};
         }
 
-        // ===== Project model =====
         function Project(name, stitches, rows, stitchesPerRow, totalRows) {
             this.id = uid('p');
             this.name = name;
@@ -1385,7 +1368,6 @@
             return null;
         }
 
-        // ===== Core display / persistence =====
         function persist() {
             localStorage.setItem("savedProjects", JSON.stringify(projects));
             localStorage.setItem("savedGroups", JSON.stringify(groups));
@@ -1533,7 +1515,7 @@
             if (isFinished(a)) {
                 updateText("Congratulations, you've finished!");
             } else {
-                updateText(""); 
+                updateText("");
             }
         }
 
@@ -1680,6 +1662,17 @@
             return api;
         }
 
+        function confirmOverflow(target, current, onConfirm) {
+            const plural = (n) => n + ' stitch' + (n === 1 ? '' : 'es');
+            openDialog({
+                message: `You're at ${plural(current)}, but this row's target is ${plural(target)}. Continue and set your count to ${target - 1}?`,
+                buttons: [
+                    {label: 'Cancel', kind: 'delete'},
+                    {label: 'Continue', onClick: onConfirm}
+                ]
+            });
+        }
+
         function setUndo(label, kind, fn) {
             pendingUndo = {kind: kind, fn: fn};
             undoBtn.innerText = label;
@@ -1739,7 +1732,7 @@
 
             btn.addEventListener('touchend', (e) => {
                 let endX = e.changedTouches[0].clientX;
-                let totalDistance = endX - startX;  
+                let totalDistance = endX - startX;
                 if (Math.abs(totalDistance) > window.innerWidth / 3) {
                     btn.style.transform = `translateX(0px)`;
                     btn.style.display = 'none';
@@ -1902,8 +1895,8 @@
             const g = currentGroup();
             if (!g) return;
             const newName = $('sbGroupName').value.trim();
-            if (newName) g.name = newName;   // empty -> keep the old name
-            updateDisplay();                 // re-renders the input with the saved name
+            if (newName) g.name = newName;
+            updateDisplay();
         });
 
         $('sbGroupName').addEventListener('keydown', (e) => {
@@ -2011,7 +2004,7 @@
                 },
                 buttons: free.length ? [
                     {label: 'Cancel'},
-                    {label: 'Add', 
+                    {label: 'Add',
                      validate: () => listEl.querySelector('input:checked') ? '' : 'Select at least one project',
                      onClick: () => {
                         const picked = [...listEl.querySelectorAll('input:checked')].map(i => projects[parseInt(i.value, 10)]);
@@ -2043,7 +2036,7 @@
                 updateDisplay();
                 doMath();
             } else {
-                updateText(MSG.finished); 
+                updateText(MSG.finished);
             }
         });
 
@@ -2223,7 +2216,7 @@
         $('settingsBtn').addEventListener('click', () => {
             openSettings();
         });
-        
+
         $('projectTitleModal').addEventListener('change', function(event) {
             const a = active();
             if (!a) return;
@@ -2283,12 +2276,12 @@
             if (a.completed) {
                 a.completed = false;
                 afterProjectChanged();
-                doMath();            // clears the congratulations message
+                doMath();
                 return;
             }
             a.completed = true;
             afterProjectChanged();
-            doMath();                // shows the congratulations message
+            doMath();
             if (!freeformCounts(a, true).length) {
                 noteAll(MSG.nothing);
                 return;
@@ -2309,7 +2302,7 @@
         $('cancelDeleteBtn').addEventListener('click', () => {
             popModal();
         });
-        
+
         $('confirmDeleteBtn').addEventListener('click', () => {
             closeAllModals();
             deleteActiveProject();
@@ -2358,7 +2351,7 @@
             if (a.mode === 'simple') {
                 const inputTotalRows = parseInt($('totalRowsInput').value) || 1;
                 if (a.rows > inputTotalRows || (a.rows === inputTotalRows && a.stitches > 0)) {
-                    updateTextModal(MSG.tooManyRows); 
+                    updateTextModal(MSG.tooManyRows);
                     return;
                 }
                 a.totalRows = inputTotalRows;
@@ -2559,7 +2552,7 @@
                     const err = patternFitError(a, pills);
                     if (err) return err;
                     convertToPattern(a, pills);
-                    finishModeChange(null);   
+                    finishModeChange(null);
                 });
                 return;
             }
@@ -2887,8 +2880,7 @@
         })();
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered'));
+            navigator.serviceWorker.register('sw.js');
         }
     </script>
 </body>
